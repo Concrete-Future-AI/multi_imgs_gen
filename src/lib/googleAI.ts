@@ -179,7 +179,7 @@ function selectPhotographyAngles(quantity: number, productAnalysis?: string): Ar
   const sortedAngles = [...PHOTOGRAPHY_ANGLES].sort((a, b) => a.priority - b.priority);
   
   // 根据产品分析智能调整角度选择
-  let selectedAngles = sortedAngles.slice(0, Math.min(quantity, sortedAngles.length));
+  const selectedAngles = sortedAngles.slice(0, Math.min(quantity, sortedAngles.length));
   
   // 如果数量超过可用角度，重复使用高优先级角度但搭配不同距离
   if (quantity > sortedAngles.length) {
@@ -286,9 +286,9 @@ export async function generateImages(
         });
 
         // 处理响应中的图片数据
-        if (response.candidates && response.candidates[0] && response.candidates[0].content.parts) {
+        if (response.candidates && response.candidates[0] && response.candidates[0].content?.parts) {
           for (const part of response.candidates[0].content.parts) {
-            if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
+            if (part.inlineData && part.inlineData.mimeType?.startsWith('image/') && part.inlineData.data) {
               // 保存图片到本地
               const imageData = part.inlineData.data;
               const fileName = `generated_${Date.now()}_${i}.png`;

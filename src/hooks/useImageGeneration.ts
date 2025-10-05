@@ -120,7 +120,7 @@ export function useImageGeneration() {
 
     } catch (error) {
       console.error('Image generation error:', error);
-      const errorMessage = handleApiError(error);
+      const errorMessage = handleApiError(error as { response?: { data?: { message?: string } }; message?: string });
       
       setGenerationProgress({
         status: 'error',

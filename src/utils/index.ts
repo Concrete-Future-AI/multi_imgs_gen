@@ -17,7 +17,7 @@ export function formatFileSize(bytes: number): string {
 }
 
 // 验证文件类型
-export function validateFileType(file: File, allowedTypes: string[]): boolean {
+export function validateFileType(file: File, allowedTypes: readonly string[]): boolean {
   return allowedTypes.includes(file.type);
 }
 
@@ -67,7 +67,7 @@ export function revokeImagePreview(url: string): void {
 }
 
 // 错误处理
-export function handleApiError(error: any): string {
+export function handleApiError(error: { response?: { data?: { message?: string } }; message?: string }): string {
   if (error.response?.data?.message) {
     return error.response.data.message;
   }

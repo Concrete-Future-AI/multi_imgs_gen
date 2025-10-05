@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { useDropzone, FileRejection } from 'react-dropzone';
 import { useAppStore } from '@/stores/useAppStore';
 import { FILE_CONFIG, ERROR_MESSAGES } from '@/lib/constants';
 import { validateFileType, validateFileSize, generateId, createImagePreview } from '@/utils';
@@ -8,13 +8,13 @@ import toast from 'react-hot-toast';
 export function useFileUpload() {
   const { setUploadedFile } = useAppStore();
 
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
+  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
     // 处理被拒绝的文件
     if (rejectedFiles.length > 0) {
       const rejection = rejectedFiles[0];
-      if (rejection.errors.some((e: any) => e.code === 'file-too-large')) {
+      if (rejection.errors.some((e) => e.code === 'file-too-large')) {
         toast.error(ERROR_MESSAGES.FILE_TOO_LARGE);
-      } else if (rejection.errors.some((e: any) => e.code === 'file-invalid-type')) {
+      } else if (rejection.errors.some((e) => e.code === 'file-invalid-type')) {
         toast.error(ERROR_MESSAGES.INVALID_FILE_TYPE);
       } else {
         toast.error(ERROR_MESSAGES.UNKNOWN_ERROR);
