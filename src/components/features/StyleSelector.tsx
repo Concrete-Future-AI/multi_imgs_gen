@@ -2,84 +2,45 @@
 
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { useAppStore } from '@/stores/useAppStore'
 import { cn } from '@/lib/utils'
 import { STYLE_OPTIONS } from '@/lib/constants'
-import { Palette, Sparkles, Camera, Zap, Check, Star, Wand2, Cpu, Clock } from 'lucide-react'
+import { Camera, Image as ImageIcon, Check, Sparkles } from 'lucide-react'
 
 interface StyleSelectorProps {
   disabled?: boolean
   onStyleSelect?: () => void
 }
 
-// 为每个风格添加UI属性，保持原有的视觉设计
 const styleUIConfig = {
-  'modern-minimalist': {
-    icon: Sparkles,
+  'product-closeup': {
+    icon: Camera,
     color: 'from-blue-500 to-cyan-500',
     bgColor: 'bg-blue-50 dark:bg-blue-950/20',
     borderColor: 'border-blue-200 dark:border-blue-800',
     textColor: 'text-blue-700 dark:text-blue-300',
     iconColor: 'text-blue-600 dark:text-blue-400',
-    tags: ['简约', '现代', '清新']
   },
-  'luxury-elegant': {
-    icon: Star,
+  'product-scene': {
+    icon: ImageIcon,
     color: 'from-purple-500 to-pink-500',
     bgColor: 'bg-purple-50 dark:bg-purple-950/20',
     borderColor: 'border-purple-200 dark:border-purple-800',
     textColor: 'text-purple-700 dark:text-purple-300',
     iconColor: 'text-purple-600 dark:text-purple-400',
-    tags: ['奢华', '高端', '质感']
-  },
-  'lifestyle-casual': {
-    icon: Camera,
-    color: 'from-green-500 to-emerald-500',
-    bgColor: 'bg-green-50 dark:bg-green-950/20',
-    borderColor: 'border-green-200 dark:border-green-800',
-    textColor: 'text-green-700 dark:text-green-300',
-    iconColor: 'text-green-600 dark:text-green-400',
-    tags: ['生活', '场景', '自然']
-  },
-  'creative-artistic': {
-    icon: Wand2,
-    color: 'from-orange-500 to-red-500',
-    bgColor: 'bg-orange-50 dark:bg-orange-950/20',
-    borderColor: 'border-orange-200 dark:border-orange-800',
-    textColor: 'text-orange-700 dark:text-orange-300',
-    iconColor: 'text-orange-600 dark:text-orange-400',
-    tags: ['创意', '艺术', '个性']
-  },
-  'tech-futuristic': {
-    icon: Cpu,
-    color: 'from-cyan-500 to-blue-500',
-    bgColor: 'bg-cyan-50 dark:bg-cyan-950/20',
-    borderColor: 'border-cyan-200 dark:border-cyan-800',
-    textColor: 'text-cyan-700 dark:text-cyan-300',
-    iconColor: 'text-cyan-600 dark:text-cyan-400',
-    tags: ['科技', '未来', '炫酷']
-  },
-  'vintage-retro': {
-    icon: Clock,
-    color: 'from-amber-500 to-orange-500',
-    bgColor: 'bg-amber-50 dark:bg-amber-950/20',
-    borderColor: 'border-amber-200 dark:border-amber-800',
-    textColor: 'text-amber-700 dark:text-amber-300',
-    iconColor: 'text-amber-600 dark:text-amber-400',
-    tags: ['复古', '怀旧', '经典']
   }
 }
 
-// 合并 STYLE_OPTIONS 和 UI 配置
-const styles = STYLE_OPTIONS.map(style => ({
-  ...style,
-  ...styleUIConfig[style.id as keyof typeof styleUIConfig]
-}))
-
 export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelectorProps) {
-  const { selectedStyle, setSelectedStyle } = useAppStore()
+  const { selectedStyle, setSelectedStyle, sceneDescription, setSceneDescription } = useAppStore()
   const [hoveredStyle, setHoveredStyle] = useState<string | null>(null)
+
+  const styles = STYLE_OPTIONS.map(style => ({
+    ...style,
+    ...styleUIConfig[style.id as keyof typeof styleUIConfig]
+  }))
 
   const handleStyleSelect = (styleId: string) => {
     if (disabled) return
@@ -90,10 +51,11 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
         name: style.name,
         description: style.description,
         preview: style.preview,
-        prompt: style.prompt
+        prompt: style.prompt,
+        requiresScene: style.requiresScene
       })
+      onStyleSelect?.()
     }
-    onStyleSelect?.()
   }
 
   return (
@@ -102,7 +64,7 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
       <div className="text-center space-y-2">
         <h3 className="text-lg font-semibold text-foreground">选择生成风格</h3>
         <p className="text-sm text-muted-foreground">
-          选择最适合您产品的摄影风格，AI将根据您的选择生成专业的产品图片
+          选择产品特写图或场景图，AI将根据您的选择生成专业的产品图片
         </p>
       </div>
 
@@ -169,19 +131,9 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
 
                   {/* 底部标题 */}
                   <div className="absolute bottom-3 left-3 right-3">
-                    <h4 className="text-white font-semibold text-lg mb-1">
+                    <h4 className="text-white font-semibold text-lg">
                       {style.name}
                     </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {style.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded-full text-xs text-white"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
                   </div>
                 </div>
 
@@ -240,6 +192,47 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
         })}
       </div>
 
+      {/* 场景描述输入框 - 仅在选择产品场景图时显示 */}
+      {selectedStyle?.requiresScene && (
+        <div className={cn(
+          'p-4 rounded-xl border space-y-3 transition-all duration-300',
+          styles.find(s => s.id === selectedStyle.id)?.bgColor,
+          styles.find(s => s.id === selectedStyle.id)?.borderColor
+        )}>
+          <div className="flex items-start gap-3">
+            <div className={cn(
+              'flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0',
+              'bg-gradient-to-br shadow-sm',
+              styles.find(s => s.id === selectedStyle.id)?.color
+            )}>
+              <Sparkles className="w-5 h-5 text-white" />
+            </div>
+            <div className="flex-1 space-y-2">
+              <label className="text-sm font-semibold text-foreground">
+                场景描述 <span className="text-destructive">*</span>
+              </label>
+              <p className="text-xs text-muted-foreground">
+                请描述您希望产品出现的场景，例如：咖啡桌上、户外草地、现代厨房等
+              </p>
+              <Input
+                type="text"
+                placeholder="例如：咖啡桌上、户外草地、现代厨房..."
+                value={sceneDescription}
+                onChange={(e) => setSceneDescription(e.target.value)}
+                disabled={disabled}
+                className="w-full"
+              />
+              {sceneDescription && (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Check className="w-3 h-3 text-green-500" />
+                  场景描述已设置，将应用于图片生成
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 当前选择状态 */}
       {selectedStyle && (
         <div className={cn(
@@ -254,7 +247,7 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
           )}>
             {(() => {
               const style = styles.find(s => s.id === selectedStyle.id)
-              const Icon = style?.icon || Sparkles
+              const Icon = style?.icon || Camera
               return <Icon className="w-6 h-6 text-white" />
             })()}
           </div>
@@ -271,6 +264,11 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
             <p className="text-sm text-muted-foreground">
               {selectedStyle.description}
             </p>
+            {selectedStyle.requiresScene && sceneDescription && (
+              <p className="text-xs text-muted-foreground mt-1">
+                场景：{sceneDescription}
+              </p>
+            )}
           </div>
         </div>
       )}
@@ -279,12 +277,12 @@ export function StyleSelector({ disabled = false, onStyleSelect }: StyleSelector
       {!selectedStyle && !disabled && (
         <div className="text-center p-6 border border-dashed border-muted-foreground/25 rounded-xl bg-muted/30">
           <div className="space-y-2">
-            <Palette className="w-8 h-8 mx-auto text-muted-foreground" />
+            <Camera className="w-8 h-8 mx-auto text-muted-foreground" />
             <p className="text-sm font-medium text-foreground">
               请选择一种风格
             </p>
             <p className="text-xs text-muted-foreground">
-              选择最适合您产品的摄影风格来开始生成
+              选择产品特写图或场景图来开始生成
             </p>
           </div>
         </div>

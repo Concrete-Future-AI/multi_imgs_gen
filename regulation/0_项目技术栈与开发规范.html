@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.23">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>quarto-inputbcad42d5693caa20</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="0_项目技术栈与开发规范_files/libs/clipboard/clipboard.min.js"></script>
+<script src="0_项目技术栈与开发规范_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="0_项目技术栈与开发规范_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="0_项目技术栈与开发规范_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="0_项目技术栈与开发规范_files/libs/quarto-html/popper.min.js"></script>
+<script src="0_项目技术栈与开发规范_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="0_项目技术栈与开发规范_files/libs/quarto-html/anchor.min.js"></script>
+<link href="0_项目技术栈与开发规范_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="0_项目技术栈与开发规范_files/libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="0_项目技术栈与开发规范_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="0_项目技术栈与开发规范_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="0_项目技术栈与开发规范_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="项目技术栈与开发规范-ai-instructions" class="level1">
+<h1>项目技术栈与开发规范 (AI Instructions)</h1>
+<section id="目录导航" class="level2">
+<h2 class="anchored" data-anchor-id="目录导航">📋 目录导航</h2>
+<ul>
+<li><a href="#1-核心技术栈">1. 核心技术栈</a></li>
+<li><a href="#2-安全架构设计原则">2. 安全架构设计原则</a></li>
+<li><a href="#3-项目结构与代码规范">3. 项目结构与代码规范</a></li>
+<li><a href="#4-核心代码实现模板">4. 核心代码实现模板</a></li>
+<li><a href="#5-架构优势与开发策略">5. 架构优势与开发策略</a></li>
+<li><a href="#6-请求ai协助时的示例格式">6. 请求AI协助时的示例格式</a></li>
+<li><a href="#7-版本控制与部署规范">7. 版本控制与部署规范</a></li>
+<li><a href="#8-环境配置与脚本规范">8. 环境配置与脚本规范</a></li>
+<li><a href="#9-代码质量检查与验证规范">9. 代码质量检查与验证规范</a></li>
+<li><a href="#10-错误处理与文档维护规范">10. 错误处理与文档维护规范</a></li>
+<li><a href="#11-完整项目生命周期管理">11. 完整项目生命周期管理</a></li>
+</ul>
+<hr>
+</section>
+<section id="核心技术栈" class="level2">
+<h2 class="anchored" data-anchor-id="核心技术栈">1. 核心技术栈</h2>
+<blockquote class="blockquote">
+<p>📌 <strong>重要说明</strong>: 以下是我们项目使用的核心技术栈。所有代码生成和技术方案都必须严格遵守此规范。</p>
+<p>🔧 <strong>可选组件说明</strong>: 标记为”可选”的组件可根据项目需求和开发阶段灵活选择是否启用。</p>
+</blockquote>
+<p>以下是我们项目使用的核心技术栈：</p>
+<ul>
+<li><strong>应用框架: Next.js 15+</strong>
+<ul>
+<li><strong>角色</strong>: 全栈Web框架。</li>
+<li><strong>规范</strong>:
+<ul>
+<li><strong>路由</strong>: 严格使用 <strong>App Router</strong> (<code>/src/app</code> 目录结构)。</li>
+<li><strong>组件</strong>: 默认使用 <strong>React Server Components (RSC)</strong> 进行数据获取和后端逻辑处理。仅在需要交互性时（如 <code>onClick</code>, <code>useState</code>）使用 <code>'use client'</code> 声明客户端组件。</li>
+<li><strong>数据交互</strong>: 优先使用 <strong>Server Actions</strong> 处理表单提交和数据变更 (Mutations)。</li>
+</ul></li>
+</ul></li>
+<li><strong>认证</strong>: <strong>NextAuth.js</strong>
+<ul>
+<li><strong>角色</strong>: 处理用户认证和会话管理。</li>
+<li><strong>规范</strong>: 与中间件集成，提供用户身份信息给安全架构使用。</li>
+</ul></li>
+<li><strong>UI &amp; 样式</strong>:
+<ul>
+<li><strong>组件库</strong>: <strong>shadcn/ui</strong>
+<ul>
+<li><strong>角色</strong>: 提供基础UI组件。</li>
+<li><strong>规范</strong>: 组件通过CLI安装到项目 <code>/src/components/ui</code> 目录中，可直接进行修改。</li>
+<li><strong>参考</strong>: https://www.shadcn.com.cn/docs/components/accordion</li>
+</ul></li>
+<li><strong>CSS框架</strong>: <strong>Tailwind CSS</strong>
+<ul>
+<li><strong>角色</strong>: 用于所有样式定义。</li>
+<li><strong>规范</strong>: 采用原子化CSS类进行样式编写。避免使用原生CSS文件，除非用于全局基础样式定义 (<code>/src/app/globals.css</code>)。</li>
+</ul></li>
+</ul></li>
+<li><strong>AI 核心</strong>: <strong>Vercel AI SDK</strong>
+<ul>
+<li><strong>角色</strong>: 连接前端与大型语言模型 (LLM) API的桥梁。</li>
+<li><strong>规范</strong>:
+<ul>
+<li>使用其提供的React Hooks (如 <code>useChat</code>, <code>useCompletion</code>) 在客户端组件中实现流式响应。</li>
+<li>在Server Actions或Route Handlers中调用其核心函数，与AI模型进行交互。</li>
+</ul></li>
+</ul></li>
+<li><strong>数据库</strong>: <strong>PostgreSQL (with <code>pgvector</code> extension)</strong>
+<ul>
+<li><strong>角色</strong>: 主数据库，用于存储结构化数据和向量数据。</li>
+<li><strong>规范</strong>: 必须启用并使用 <code>pgvector</code> 扩展来支持向量的存储和相似度搜索。</li>
+<li><strong>安全</strong>: 启用行级安全 (Row-Level Security, RLS) 确保数据访问权限在数据库层面强制执行。</li>
+</ul></li>
+<li><strong>ORM</strong>: <strong>Prisma</strong>
+<ul>
+<li><strong>角色</strong>: 数据库访问层，提供类型安全的数据库操作。便于拓展。</li>
+<li><strong>规范</strong>:
+<ul>
+<li><strong>模型定义</strong>: 唯一的真实数据源是 <code>/prisma/schema.prisma</code> 文件。所有数据模型必须在此文件中定义。</li>
+<li><strong>工作流</strong>:
+<ol type="1">
+<li>修改 <code>schema.prisma</code> 文件。</li>
+<li>本地开发运行 <code>npx prisma generate</code> 来更新Prisma Client类型。</li>
+<li>本地开发运行 <code>npx prisma migrate dev</code> 来创建和应用数据库迁移。</li>
+</ol></li>
+<li><strong>客户端实例</strong>: 在 <code>/src/lib/prisma.ts</code> 中创建并导出一个单例的 <code>PrismaClient</code> 实例，以避免在开发环境中创建过多连接。</li>
+<li><strong>安全扩展</strong>: 使用 Prisma 客户端扩展 (<code>$extends</code>) 集成安全上下文。</li>
+</ul></li>
+</ul></li>
+<li><strong>缓存/性能 (可选)</strong>: <strong>Redis</strong>
+<ul>
+<li><strong>角色</strong>: 高性能缓存层，用于优化数据访问性能。</li>
+<li><strong>规范</strong>: 在服务层预留缓存逻辑，支持”即插即用”的性能优化。</li>
+<li><strong>说明</strong>: 🔧 <strong>可选组件</strong> - 项目初期可不配置，后期根据性能需求决定是否启用。</li>
+</ul></li>
+<li><strong>静态文件存储: 阿里云 OSS (S3 兼容)</strong>
+<ul>
+<li><strong>角色</strong>: 存储用户上传的图片、视频、文档等静态资源。</li>
+<li><strong>规范</strong>:
+<ul>
+<li>应用后端通过 S3 兼容的SDK (例如 <code>@aws-sdk/client-s3</code>) 与 OSS 进行交互。</li>
+<li>客户端上传文件时，应通过后端获取预签名的上传URL (presigned URL) 来实现安全、直接的上传，避免文件流经服务器。</li>
+<li>数据库中只存储文件的 key 或 URL，不存储文件本身。</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="安全架构设计原则" class="level2">
+<h2 class="anchored" data-anchor-id="安全架构设计原则">2. 安全架构设计原则</h2>
+<section id="目标与愿景" class="level3">
+<h3 class="anchored" data-anchor-id="目标与愿景">2.1 目标与愿景</h3>
+<p>本项目采用一种在现代Web应用中实现健壮、可维护、高性能且对开发者友好的数据架构方案。其核心目标是：</p>
+<ul>
+<li><strong>极致安全</strong>: 数据访问权限在数据库层面强制执行（RLS），确保用户只能访问其自身拥有的数据。</li>
+<li><strong>关注点分离</strong>:
+<ul>
+<li><strong>API路由/页面</strong> 负责处理HTTP请求与响应。</li>
+<li><strong>服务层</strong> 负责封装和集中化所有业务逻辑与数据访问策略。</li>
+<li><strong>数据层 (Prisma/PostgreSQL)</strong> 负责数据的持久化与安全过滤。</li>
+</ul></li>
+<li><strong>性能就绪 (Performance-Ready)</strong>: 架构从第一天起就为引入缓存（如 Redis）预留了位置，未来可无缝激活性能优化，而无需重构。</li>
+<li><strong>卓越的开发体验 (DX)</strong>: 业务代码简洁、直观，无需关心底层的RLS实现或数据来源（数据库/缓存）。</li>
+</ul>
+</section>
+<section id="请求生命周期" class="level3">
+<h3 class="anchored" data-anchor-id="请求生命周期">2.2 请求生命周期</h3>
+<p>一个受保护的请求从发起到响应的完整流程如下：</p>
+<ol type="1">
+<li><strong>[请求入口] Next.js Middleware</strong>:
+<ul>
+<li>拦截请求，解析用户身份 (<code>userId</code>)。</li>
+<li>将 <code>userId</code> 注入到 <code>AsyncLocalStorage</code> 上下文中，供后续调用链使用。</li>
+</ul></li>
+<li><strong>[调用层] API 路由 / Server Component</strong>:
+<ul>
+<li>职责非常单一：处理HTTP层的事务（解析请求体、返回JSON响应等）。</li>
+<li>它不再直接与 <code>prisma</code> 交互，而是调用<strong>服务层</strong>中定义好的函数来完成业务需求。例如 <code>await postService.getPostsForCurrentUser()</code>。</li>
+</ul></li>
+<li><strong>[服务层] 数据服务 / 业务逻辑封装</strong>:
+<ul>
+<li><strong>架构的核心</strong>。所有业务逻辑和数据访问被封装在此处（例如 <code>services/postService.ts</code>）。</li>
+<li>它是数据来源的决策者。<strong>这里是为Redis预留的位置</strong>。它会决定是从缓存（未来）还是从数据库获取数据。</li>
+<li>它调用 <code>prisma</code> 客户端来执行数据库操作。</li>
+</ul></li>
+<li><strong>[数据访问层] Prisma Client Extension</strong>:
+<ul>
+<li>服务层调用 <code>prisma</code> 时，增强的Client Extension会被触发。</li>
+<li>它从 <code>AsyncLocalStorage</code> 中读取 <code>userId</code>，并通过事务安全地设置PostgreSQL的会话变量 <code>app.current_user_id</code>。</li>
+</ul></li>
+<li><strong>[数据库层] PostgreSQL RLS 执行</strong>:
+<ul>
+<li>PostgreSQL 根据会话变量和预设的RLS策略，在底层完成数据过滤。</li>
+</ul></li>
+<li><strong>[响应] 返回安全数据</strong>:
+<ul>
+<li>安全的数据沿调用链原路返回：<code>PostgreSQL -&gt; Prisma -&gt; 服务层 -&gt; 调用层 -&gt; 客户端</code>。</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="项目结构与代码规范" class="level2">
+<h2 class="anchored" data-anchor-id="项目结构与代码规范">3. 项目结构与代码规范</h2>
+<blockquote class="blockquote">
+<p>📁 <strong>架构</strong>: 基于 Next.js 15 App Router 的现代化项目结构</p>
+<p>🎯 <strong>原则</strong>: 清晰分层、职责分离、易于维护和扩展</p>
+<p>🔧 <strong>类型安全</strong>: 严格的 TypeScript 配置，禁止使用 any 类型</p>
+</blockquote>
+<ul>
+<li><p><strong>语言</strong>: <strong>TypeScript</strong> (启用 <code>strict</code> 模式，必须提醒AI编写时严禁使用ANY类型)。</p></li>
+<li><p><strong>主要目录结构</strong>:</p>
+<pre><code>/
+├── prisma/
+│   └── schema.prisma      # 数据库模型定义
+├── public/                # 静态资源
+└── src/
+    ├── app/                 # Next.js 路由和页面
+    │   ├── api/             # API Route Handlers
+    │   └── (routes)/...     # 页面组件
+    ├── components/
+    │   ├── ui/              # shadcn/ui 官方组件
+    │   └── shared/          # 项目自定义的、可复用的组件
+    ├── services/            # 业务逻辑服务层
+    │   └── *.ts             # 各种业务服务 (如 postService.ts)
+    └── lib/
+        ├── prisma.ts        # Prisma Client 单例 (带安全扩展)
+        ├── context.ts       # 请求上下文管理
+        ├── redis.ts         # Redis 客户端 (预留)
+        ├── ai.ts            # AI SDK 相关配置和助手函数
+        ├── oss.ts           # OSS/S3 客户端和相关函数
+        └── utils.ts         # 通用工具函数</code></pre></li>
+</ul>
+</section>
+<section id="核心代码实现模板" class="level2">
+<h2 class="anchored" data-anchor-id="核心代码实现模板">4. 核心代码实现模板</h2>
+<section id="postgresql-安全规则" class="level3">
+<h3 class="anchored" data-anchor-id="postgresql-安全规则">4.1 PostgreSQL 安全规则</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 1. 在需要保护的表上启用 RLS</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> <span class="ot">"public"</span>.<span class="ot">"Post"</span> <span class="kw">ENABLE</span> <span class="kw">ROW</span> <span class="kw">LEVEL</span> SECURITY;</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2. 创建具体的安全策略</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">-- 只允许用户读取、创建、修改、删除自己的帖子</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> POLICY <span class="ot">"user_can_manage_own_posts"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> <span class="ot">"public"</span>.<span class="ot">"Post"</span> <span class="cf">FOR</span> <span class="kw">ALL</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="kw">USING</span> (<span class="ot">"authorId"</span>:<span class="ch">:text</span> <span class="op">=</span> current_setting(<span class="st">'app.current_user_id'</span>, <span class="kw">true</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> <span class="kw">CHECK</span> (<span class="ot">"authorId"</span>:<span class="ch">:text</span> <span class="op">=</span> current_setting(<span class="st">'app.current_user_id'</span>, <span class="kw">true</span>));</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="请求上下文管理-libcontext.ts" class="level3">
+<h3 class="anchored" data-anchor-id="请求上下文管理-libcontext.ts">4.2 请求上下文管理 (<code>lib/context.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// lib/context.ts</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { AsyncLocalStorage } <span class="im">from</span> <span class="st">'async_hooks'</span><span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> RequestContext {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  userId<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">// 全局唯一的上下文存储实例</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> requestContextStore <span class="op">=</span> <span class="kw">new</span> <span class="fu">AsyncLocalStorage</span><span class="op">&lt;</span>RequestContext<span class="op">&gt;</span>()<span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">// 用于在代码中安全获取上下文的辅助函数</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getRequestContext</span>()<span class="op">:</span> RequestContext {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> context <span class="op">=</span> requestContextStore<span class="op">.</span><span class="fu">getStore</span>()<span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>context) {</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">Error</span>(<span class="st">'请求上下文未找到。请确保请求已被中间件处理。'</span>)<span class="op">;</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> context<span class="op">;</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="增强的-prisma-client-libprisma.ts" class="level3">
+<h3 class="anchored" data-anchor-id="增强的-prisma-client-libprisma.ts">4.3 增强的 Prisma Client (<code>lib/prisma.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">// lib/prisma.ts</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { PrismaClient } <span class="im">from</span> <span class="st">'@prisma/client'</span><span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getRequestContext } <span class="im">from</span> <span class="st">'./context'</span><span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> prismaClientSingleton <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">new</span> <span class="fu">PrismaClient</span>()<span class="op">.</span><span class="fu">$extends</span>({</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    query<span class="op">:</span> {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>      $allModels<span class="op">:</span> {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="kw">async</span> <span class="fu">$allOperations</span>({ args<span class="op">,</span> query }) {</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>          <span class="cf">try</span> {</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">const</span> { userId } <span class="op">=</span> <span class="fu">getRequestContext</span>()<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="kw">const</span> [_<span class="op">,</span> result] <span class="op">=</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="fu">$transaction</span>([</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>              prisma<span class="op">.</span><span class="fu">$executeRawUnsafe</span>(<span class="vs">`SET app.current_user_id = '</span><span class="sc">${</span>userId<span class="sc">}</span><span class="vs">'`</span>)<span class="op">,</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>              <span class="fu">query</span>(args)<span class="op">,</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            ])<span class="op">;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>          } <span class="cf">catch</span> (error) {</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 如果没有上下文（例如在后台任务中），直接执行查询</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 让数据库的 RLS 策略根据规则去拒绝或放行</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="fu">query</span>(args)<span class="op">;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>          }</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>      }<span class="op">,</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="kw">declare</span> <span class="bu">global</span> {</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> prisma<span class="op">:</span> <span class="dt">undefined</span> <span class="op">|</span> <span class="bu">ReturnType</span><span class="op">&lt;</span><span class="kw">typeof</span> prismaClientSingleton<span class="op">&gt;;</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co">// 导出一个全局唯一的、增强后的 prisma 实例</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> prisma <span class="op">=</span> globalThis<span class="op">.</span><span class="at">prisma</span> <span class="op">??</span> <span class="fu">prismaClientSingleton</span>()<span class="op">;</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">NODE_ENV</span> <span class="op">!==</span> <span class="st">'production'</span>) {</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    globalThis<span class="op">.</span><span class="at">prisma</span> <span class="op">=</span> prisma<span class="op">;</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="中间件配置-middleware.ts" class="level3">
+<h3 class="anchored" data-anchor-id="中间件配置-middleware.ts">4.4 中间件配置 (<code>middleware.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// middleware.ts</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { NextResponse } <span class="im">from</span> <span class="st">'next/server'</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="im">type</span> { NextRequest } <span class="im">from</span> <span class="st">'next/server'</span><span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getToken } <span class="im">from</span> <span class="st">'next-auth/jwt'</span><span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { requestContextStore } <span class="im">from</span> <span class="st">'@/lib/context'</span><span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">middleware</span>(request<span class="op">:</span> NextRequest) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> token <span class="op">=</span> <span class="cf">await</span> <span class="fu">getToken</span>({ req<span class="op">:</span> request })<span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> userId <span class="op">=</span> token<span class="op">?.</span><span class="at">sub</span><span class="op">;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (userId) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 为整个请求的生命周期运行在带有 userId 的上下文中</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">await</span> requestContextStore<span class="op">.</span><span class="fu">run</span>({ userId }<span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">next</span>()<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">next</span>()<span class="op">;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> {</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  matcher<span class="op">:</span> [<span class="st">'/api/:path*'</span><span class="op">,</span> <span class="st">'/dashboard/:path*'</span>]<span class="op">,</span> <span class="co">// 根据需要保护的路径配置</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="redis-客户端预留-libredis.ts" class="level3">
+<h3 class="anchored" data-anchor-id="redis-客户端预留-libredis.ts">4.5 Redis 客户端预留 (<code>lib/redis.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">// lib/redis.ts</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> Redis <span class="im">from</span> <span class="st">'ioredis'</span><span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> redisClientSingleton <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_URL</span>) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'正在初始化 Redis 客户端...'</span>)<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Redis</span>(<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_URL</span>)<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">warn</span>(<span class="st">'未找到 REDIS_URL，Redis 客户端未初始化。'</span>)<span class="op">;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="kw">declare</span> <span class="bu">global</span> {</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> redis<span class="op">:</span> <span class="dt">undefined</span> <span class="op">|</span> Redis <span class="op">|</span> <span class="dt">null</span><span class="op">;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">// 导出一个全局唯一的 Redis 客户端实例</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> redis <span class="op">=</span> globalThis<span class="op">.</span><span class="at">redis</span> <span class="op">??</span> <span class="fu">redisClientSingleton</span>()<span class="op">;</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">NODE_ENV</span> <span class="op">!==</span> <span class="st">'production'</span>) {</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  globalThis<span class="op">.</span><span class="at">redis</span> <span class="op">=</span> redis<span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="服务层模板-servicespostservice.ts" class="level3">
+<h3 class="anchored" data-anchor-id="服务层模板-servicespostservice.ts">4.6 服务层模板 (<code>services/postService.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">// services/postService.ts</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { prisma } <span class="im">from</span> <span class="st">'@/lib/prisma'</span><span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { redis } <span class="im">from</span> <span class="st">'@/lib/redis'</span><span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getRequestContext } <span class="im">from</span> <span class="st">'@/lib/context'</span><span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="im">type</span> { Post } <span class="im">from</span> <span class="st">'@prisma/client'</span><span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"> * 获取当前用户的帖子列表。</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"> * 这是应用中获取该数据的唯一入口点。</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">getPostsForCurrentUser</span>()<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>Post[]<span class="op">&gt;</span> {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { userId } <span class="op">=</span> <span class="fu">getRequestContext</span>()<span class="op">;</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> cacheKey <span class="op">=</span> <span class="vs">`user:</span><span class="sc">${</span>userId<span class="sc">}</span><span class="vs">:posts`</span><span class="op">;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- 缓存逻辑预留位置 ---</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (redis) {</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   try {</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     const cachedData = await redis.get(cacheKey);</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     if (cachedData) return JSON.parse(cachedData);</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   } catch (e) { console.error('Redis读取错误:', e); }</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> posts <span class="op">=</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="at">post</span><span class="op">.</span><span class="fu">findMany</span>({</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    orderBy<span class="op">:</span> { createdAt<span class="op">:</span> <span class="st">'desc'</span> }<span class="op">,</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- 缓存写入预留位置 ---</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (redis) {</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   try {</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     // 将数据存入缓存，设置 2 分钟过期</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     await redis.set(cacheKey, JSON.stringify(posts), 'EX', 120);</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   } catch (e) { console.error('Redis写入错误:', e); }</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> posts<span class="op">;</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a><span class="co"> * 为当前用户创建一篇新帖子。</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="cv">data</span><span class="co"> - 帖子的标题和内容</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">createPostForCurrentUser</span>(data<span class="op">:</span> { title<span class="op">:</span> <span class="dt">string</span><span class="op">;</span> content<span class="op">?:</span> <span class="dt">string</span> })<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>Post<span class="op">&gt;</span> {</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { userId } <span class="op">=</span> <span class="fu">getRequestContext</span>()<span class="op">;</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newPost <span class="op">=</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="at">post</span><span class="op">.</span><span class="fu">create</span>({</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>    data<span class="op">:</span> {</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>data<span class="op">,</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>      authorId<span class="op">:</span> userId<span class="op">,</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- 缓存失效逻辑预留位置 ---</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> cacheKey <span class="op">=</span> <span class="vs">`user:</span><span class="sc">${</span>userId<span class="sc">}</span><span class="vs">:posts`</span><span class="op">;</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (redis) {</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   try {</span></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     // 当创建新帖子后，必须清除旧的列表缓存</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     await redis.del(cacheKey);</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   } catch (e) { console.error('Redis缓存失效错误:', e); }</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> newPost<span class="op">;</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="api-路由模板-appapimy-postsroute.ts" class="level3">
+<h3 class="anchored" data-anchor-id="api-路由模板-appapimy-postsroute.ts">4.7 API 路由模板 (<code>app/api/my-posts/route.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// app/api/my-posts/route.ts</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getPostsForCurrentUser<span class="op">,</span> createPostForCurrentUser } <span class="im">from</span> <span class="st">'@/services/postService'</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { NextResponse } <span class="im">from</span> <span class="st">'next/server'</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">// 获取帖子列表</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">GET</span>() {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> posts <span class="op">=</span> <span class="cf">await</span> <span class="fu">getPostsForCurrentUser</span>()<span class="op">;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>(posts)<span class="op">;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(error)<span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>({ message<span class="op">:</span> <span class="st">'获取帖子失败'</span> }<span class="op">,</span> { status<span class="op">:</span> <span class="dv">500</span> })<span class="op">;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="co">// 创建新帖子</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">POST</span>(request<span class="op">:</span> Request) {</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> body <span class="op">=</span> <span class="cf">await</span> request<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>body<span class="op">.</span><span class="at">title</span>) {</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>({ message<span class="op">:</span> <span class="st">'标题不能为空'</span> }<span class="op">,</span> { status<span class="op">:</span> <span class="dv">400</span> })<span class="op">;</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> newPost <span class="op">=</span> <span class="cf">await</span> <span class="fu">createPostForCurrentUser</span>({ title<span class="op">:</span> body<span class="op">.</span><span class="at">title</span><span class="op">,</span> content<span class="op">:</span> body<span class="op">.</span><span class="at">content</span> })<span class="op">;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>(newPost<span class="op">,</span> { status<span class="op">:</span> <span class="dv">201</span> })<span class="op">;</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(error)<span class="op">;</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>({ message<span class="op">:</span> <span class="st">'创建帖子失败'</span> }<span class="op">,</span> { status<span class="op">:</span> <span class="dv">500</span> })<span class="op">;</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="架构优势与开发策略" class="level2">
+<h2 class="anchored" data-anchor-id="架构优势与开发策略">5. 架构优势与开发策略</h2>
+<ul>
+<li><strong>清晰的边界</strong>: 每个模块职责单一，API路由不含业务逻辑，服务层不含HTTP逻辑。</li>
+<li><strong>高度可维护</strong>: 当需要修改”获取帖子列表”的逻辑（例如增加一个字段或修改排序）时，你<strong>只需要修改 <code>postService.ts</code> 一个文件</strong>。</li>
+<li><strong>“即插即用”的性能</strong>: 当未来需要性能优化时，只需在 <code>postService.ts</code> 中<strong>取消注释</strong>并实现缓存相关的代码即可，项目的任何其他部分都无需改动。这使得性能优化成为一个低风险、可预测的任务。</li>
+<li><strong>数据安全</strong>: 通过 PostgreSQL RLS 在数据库层面强制执行安全策略，确保即使代码有漏洞也不会泄露其他用户的数据。</li>
+</ul>
+</section>
+<section id="请求ai协助时的示例格式" class="level2">
+<h2 class="anchored" data-anchor-id="请求ai协助时的示例格式">6. 请求AI协助时的示例格式</h2>
+<p>当我向你请求代码时，我会尽量遵循以下格式，请根据这些信息进行响应：</p>
+<ul>
+<li><strong>目标 (Goal)</strong>: (简要说明我想实现的功能)</li>
+<li><strong>上下文 (Context)</strong>: (说明此功能所在的具体文件或组件路径)</li>
+<li><strong>数据模型 (Data Models)</strong>: (指出需要参考的 <code>prisma.schema</code> 中的模型)</li>
+<li><strong>具体请求 (Request)</strong>: (详细说明需要你生成的代码片段、函数或完整组件)</li>
+</ul>
+</section>
+<section id="版本控制与部署规范-version-control-deployment" class="level2">
+<h2 class="anchored" data-anchor-id="版本控制与部署规范-version-control-deployment">7. 版本控制与部署规范 (Version Control &amp; Deployment)</h2>
+<section id="git-工作流规范" class="level3">
+<h3 class="anchored" data-anchor-id="git-工作流规范">7.1 Git 工作流规范</h3>
+<ul>
+<li><p><strong>工具</strong>: <strong>Git</strong></p>
+<ul>
+<li><strong>角色</strong>: 项目代码的版本管理工具。</li>
+<li><strong>规范</strong>:
+<ul>
+<li>所有代码变更都必须通过 Git 进行提交。</li>
+<li>遵循 <a href="https://www.conventionalcommits.org/zh-hans/v1.0.0/">Conventional Commits</a> 规范编写提交信息，便于追溯和自动化处理。</li>
+<li>使用 <code>.gitignore</code> 文件忽略不需要版本控制的文件和目录。</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="分支管理策略" class="level3">
+<h3 class="anchored" data-anchor-id="分支管理策略">7.2 分支管理策略</h3>
+<ul>
+<li><strong>主分支 (main/master)</strong>:
+<ul>
+<li>始终保持稳定可部署状态</li>
+<li>只接受来自 <code>develop</code> 分支的合并请求</li>
+<li>直接推送到主分支被严格禁止</li>
+</ul></li>
+<li><strong>开发分支 (develop)</strong>:
+<ul>
+<li>集成分支，用于功能分支的合并</li>
+<li>定期合并到主分支进行发布</li>
+</ul></li>
+<li><strong>功能分支 (feature/xxx)</strong>:
+<ul>
+<li><strong>重要</strong>: 所有新功能开发必须创建独立的功能分支</li>
+<li>命名规范: <code>feature/功能描述</code> 或 <code>feature/issue-编号</code></li>
+<li>从 <code>develop</code> 分支创建，完成后合并回 <code>develop</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="ssh-公钥管理" class="level3">
+<h3 class="anchored" data-anchor-id="ssh-公钥管理">7.3 SSH 公钥管理</h3>
+<ul>
+<li><p><strong>GitHub 公钥配置</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成 SSH 密钥对</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-t</span> ed25519 <span class="at">-C</span> <span class="st">"your-email@example.com"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加到 SSH agent</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-add</span> ~/.ssh/id_ed25519</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 复制公钥到 GitHub</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>服务器公钥配置</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 将开发者公钥添加到服务器</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_ed25519.pub <span class="op">&gt;&gt;</span> ~/.ssh/authorized_keys</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 ~/.ssh/authorized_keys</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 700 ~/.ssh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="cicd-流程与代码质量检查" class="level3">
+<h3 class="anchored" data-anchor-id="cicd-流程与代码质量检查">7.4 CI/CD 流程与代码质量检查</h3>
+<blockquote class="blockquote">
+<p>🚀 <strong>目标</strong>: 建立完整的持续集成和持续部署流程，确保代码质量和部署安全性</p>
+<p>🔒 <strong>质量门禁</strong>: 所有检查必须通过才能部署到生产环境</p>
+</blockquote>
+<section id="cicd-管道设计原则" class="level4">
+<h4 class="anchored" data-anchor-id="cicd-管道设计原则">7.4.1 CI/CD 管道设计原则</h4>
+<ul>
+<li><strong>质量门禁</strong>: 每个阶段都必须通过质量检查才能进入下一阶段</li>
+<li><strong>快速反馈</strong>: 尽早发现问题，减少修复成本</li>
+<li><strong>自动化优先</strong>: 减少人工干预，提高部署效率和一致性</li>
+</ul>
+</section>
+<section id="github-actions-cicd-配置" class="level4">
+<h4 class="anchored" data-anchor-id="github-actions-cicd-配置">7.4.2 GitHub Actions CI/CD 配置</h4>
+<p>创建 <code>.github/workflows/ci-cd.yml</code> 文件：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> CI/CD Pipeline</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">on</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main</span><span class="kw">,</span><span class="at"> develop </span><span class="kw">]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">pull_request</span><span class="kw">:</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at"> main</span><span class="kw">,</span><span class="at"> develop </span><span class="kw">]</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">  # 代码质量检查阶段</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">quality-check</span><span class="kw">:</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 代码质量检查</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 检出代码</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 设置 Node.js</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-node@v4</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node-version</span><span class="kw">:</span><span class="at"> </span><span class="st">'18'</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> </span><span class="st">'npm'</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="at">        </span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 安装依赖</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npm ci</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> TypeScript 类型检查</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npx tsc --noEmit</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> ESLint 代码规范检查</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npm run lint</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 构建检查</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npm run build</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 运行测试 (可选)</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npm run test</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">if</span><span class="kw">:</span><span class="at"> hashFiles('jest.config.*') != ''</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="co">  # 安全扫描阶段</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">security-scan</span><span class="kw">:</span></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 安全扫描</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> quality-check</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 检出代码</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 设置 Node.js</span></span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/setup-node@v4</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">node-version</span><span class="kw">:</span><span class="at"> </span><span class="st">'18'</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">cache</span><span class="kw">:</span><span class="at"> </span><span class="st">'npm'</span></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="at">        </span></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 安装依赖</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npm ci</span></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 依赖安全扫描</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">run</span><span class="kw">:</span><span class="at"> npm audit --audit-level=high</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 代码安全扫描</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> github/codeql-action/analyze@v2</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">languages</span><span class="kw">:</span><span class="at"> typescript</span></span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a><span class="co">  # 部署阶段（仅主分支）</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">deploy</span><span class="kw">:</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">runs-on</span><span class="kw">:</span><span class="at"> ubuntu-latest</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 部署到生产环境</span></span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">needs</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="at">quality-check</span><span class="kw">,</span><span class="at"> security-scan</span><span class="kw">]</span></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">if</span><span class="kw">:</span><span class="at"> github.ref == 'refs/heads/main'</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="at">    </span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">steps</span><span class="kw">:</span></span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 检出代码</span></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> actions/checkout@v4</span></span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a><span class="at">      </span></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> 部署到服务器</span></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> appleboy/ssh-action@v0.1.5</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="fu">with</span><span class="kw">:</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">host</span><span class="kw">:</span><span class="at"> ${{ secrets.HOST }}</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">username</span><span class="kw">:</span><span class="at"> ${{ secrets.USERNAME }}</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">key</span><span class="kw">:</span><span class="at"> ${{ secrets.SSH_KEY }}</span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="fu">        script</span><span class="kw">: </span><span class="ch">|</span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>          cd /path/to/your/app</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>          git pull origin main</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>          npm ci --production</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>          npm run build</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>          pm2 restart app-name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="质量门禁规则" class="level4">
+<h4 class="anchored" data-anchor-id="质量门禁规则">7.4.3 质量门禁规则</h4>
+<blockquote class="blockquote">
+<p>🚫 <strong>零容忍</strong>: 任何一项检查失败都将阻止代码合并</p>
+<p>✅ <strong>必须通过</strong>: 以下所有检查项目必须全部通过才能合并到主分支</p>
+</blockquote>
+<p><strong>强制性检查项目</strong>：</p>
+<ol type="1">
+<li><strong>TypeScript 类型检查</strong>: <code>npx tsc --noEmit</code></li>
+<li><strong>代码规范检查</strong>: <code>npm run lint</code></li>
+<li><strong>构建验证</strong>: <code>npm run build</code></li>
+<li><strong>单元测试 (可选)</strong>: <code>npm run test</code>（如果存在测试配置）</li>
+<li><strong>安全扫描</strong>: <code>npm audit</code></li>
+<li><strong>代码覆盖率 (可选)</strong>: 最低 80%（如果配置了测试）</li>
+</ol>
+</section>
+<section id="分支保护规则" class="level4">
+<h4 class="anchored" data-anchor-id="分支保护规则">7.4.4 分支保护规则</h4>
+<blockquote class="blockquote">
+<p>🛡️ <strong>分支保护</strong>: 通过 GitHub 分支保护规则强制执行代码质量标准</p>
+<p>🔒 <strong>主分支保护</strong>: 防止直接推送到主分支，确保所有代码都经过审查</p>
+</blockquote>
+<p>在 GitHub 仓库设置中配置分支保护：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"required_status_checks"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"strict"</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"contexts"</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"代码质量检查"</span><span class="ot">,</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"安全扫描"</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"enforce_admins"</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"required_pull_request_reviews"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"required_approving_review_count"</span><span class="fu">:</span> <span class="dv">1</span><span class="fu">,</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"dismiss_stale_reviews"</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"restrictions"</span><span class="fu">:</span> <span class="kw">null</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="服务器部署规范" class="level3">
+<h3 class="anchored" data-anchor-id="服务器部署规范">7.5 服务器部署规范</h3>
+<ul>
+<li><p><strong>部署原则</strong>:</p>
+<ul>
+<li><strong>严禁在服务器上直接修改代码</strong></li>
+<li>服务器只负责代码拉取和应用部署</li>
+<li>所有代码修改必须在本地完成并推送到仓库</li>
+</ul></li>
+<li><p><strong>部署流程</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 服务器拉取最新代码</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 安装/更新依赖</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">--production</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 构建应用</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 重启服务</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="ex">pm2</span> restart app-name</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>自动化部署脚本示例</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># deploy.sh</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"开始部署..."</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 拉取最新代码</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"代码拉取失败"</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装依赖</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">--production</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"依赖安装失败"</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建应用</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"应用构建失败"</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 重启服务</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="ex">pm2</span> restart app-name</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"部署完成"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="gitignore-文件内容" class="level3">
+<h3 class="anchored" data-anchor-id="gitignore-文件内容">7.5 .gitignore 文件内容</h3>
+<ul>
+<li><p><strong>目的</strong>: 确保本地环境变量、依赖目录、构建产物和系统/IDE临时文件不会被提交到代码仓库。</p>
+<pre><code># Dependencies
+/node_modules
+/.pnpm-store
+
+# Local Environment Variables (IMPORTANT!)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js build output
+/.next/
+/out/
+
+# Production
+/build
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# macOS specific files
+.DS_Store
+
+# Deployment scripts (if containing sensitive info)
+deploy-config.sh</code></pre></li>
+</ul>
+</section>
+</section>
+<section id="环境配置与脚本规范" class="level2">
+<h2 class="anchored" data-anchor-id="环境配置与脚本规范">8. 环境配置与脚本规范</h2>
+<section id="package.json-脚本配置" class="level3">
+<h3 class="anchored" data-anchor-id="package.json-脚本配置">8.1 package.json 脚本配置</h3>
+<blockquote class="blockquote">
+<p>📦 <strong>配置说明</strong>: 完整的 npm 脚本配置，包含开发、构建、质量检查等所有必要脚本</p>
+<p>🔧 <strong>可选脚本</strong>: 标记为”可选”的脚本可根据项目需求选择性配置</p>
+</blockquote>
+<p>项目的 <code>package.json</code> 必须包含以下标准化脚本，支持不同环境的端口配置：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"scripts"</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"dev"</span><span class="fu">:</span> <span class="st">"cross-env NODE_ENV=development PORT=3000 next dev"</span><span class="fu">,</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"build"</span><span class="fu">:</span> <span class="st">"next build"</span><span class="fu">,</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"start"</span><span class="fu">:</span> <span class="st">"cross-env NODE_ENV=production PORT=8080 next start"</span><span class="fu">,</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"start:dev"</span><span class="fu">:</span> <span class="st">"cross-env NODE_ENV=development PORT=3000 next start"</span><span class="fu">,</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"start:prod"</span><span class="fu">:</span> <span class="st">"cross-env NODE_ENV=production PORT=8080 next start"</span><span class="fu">,</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"lint"</span><span class="fu">:</span> <span class="st">"next lint"</span><span class="fu">,</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"lint:fix"</span><span class="fu">:</span> <span class="st">"next lint --fix"</span><span class="fu">,</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"type-check"</span><span class="fu">:</span> <span class="st">"tsc --noEmit"</span><span class="fu">,</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"db:generate"</span><span class="fu">:</span> <span class="st">"prisma generate"</span><span class="fu">,</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"db:migrate"</span><span class="fu">:</span> <span class="st">"prisma migrate dev"</span><span class="fu">,</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"db:migrate:prod"</span><span class="fu">:</span> <span class="st">"prisma migrate deploy"</span><span class="fu">,</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"db:studio"</span><span class="fu">:</span> <span class="st">"prisma studio"</span><span class="fu">,</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"db:seed"</span><span class="fu">:</span> <span class="st">"tsx prisma/seed.ts"</span><span class="fu">,</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"test"</span><span class="fu">:</span> <span class="st">"jest"</span><span class="fu">,</span>                    <span class="er">//</span> <span class="er">🔧</span> <span class="er">可选：单元测试</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"test:watch"</span><span class="fu">:</span> <span class="st">"jest --watch"</span><span class="fu">,</span>      <span class="er">//</span> <span class="er">🔧</span> <span class="er">可选：监听模式测试</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">"test:coverage"</span><span class="fu">:</span> <span class="st">"jest --coverage"</span> <span class="er">//</span> <span class="er">🔧</span> <span class="er">可选：测试覆盖率</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="环境变量配置" class="level3">
+<h3 class="anchored" data-anchor-id="环境变量配置">8.2 环境变量配置</h3>
+<ul>
+<li><p><strong>开发环境</strong> (<code>.env.local</code>):</p>
+<pre class="env"><code>NODE_ENV=development
+PORT=3000
+DATABASE_URL="postgresql://user:password@localhost:5432/myapp_dev"
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-dev-secret</code></pre></li>
+<li><p><strong>生产环境</strong> (<code>.env.production</code>):</p>
+<pre class="env"><code>NODE_ENV=production
+PORT=8080
+DATABASE_URL="postgresql://user:password@prod-server:5432/myapp_prod"
+NEXTAUTH_URL=https://yourdomain.com
+NEXTAUTH_SECRET=your-production-secret</code></pre></li>
+</ul>
+</section>
+<section id="端口配置规范" class="level3">
+<h3 class="anchored" data-anchor-id="端口配置规范">8.3 端口配置规范</h3>
+<ul>
+<li><strong>开发环境端口</strong>: <code>3000</code> (默认 Next.js 开发端口)</li>
+<li><strong>生产环境端口</strong>: <code>8080</code> (避免与系统服务冲突)</li>
+<li><strong>数据库端口</strong>: <code>5432</code> (PostgreSQL 默认端口)</li>
+<li><strong>Redis 端口</strong>: <code>6379</code> (Redis 默认端口，如果使用)</li>
+</ul>
+</section>
+<section id="跨平台兼容性" class="level3">
+<h3 class="anchored" data-anchor-id="跨平台兼容性">8.4 跨平台兼容性</h3>
+<ul>
+<li><p>使用 <code>cross-env</code> 包确保环境变量在 Windows、macOS 和 Linux 上的兼容性</p></li>
+<li><p>PowerShell 兼容的脚本示例：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 开发环境启动</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="va">$env</span><span class="op">:</span><span class="va">NODE_ENV</span><span class="op">=</span><span class="st">"development"</span><span class="op">;</span> <span class="va">$env</span><span class="op">:</span><span class="va">PORT</span><span class="op">=</span><span class="st">"3000"</span><span class="op">;</span> npm run dev</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 生产环境启动</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="va">$env</span><span class="op">:</span><span class="va">NODE_ENV</span><span class="op">=</span><span class="st">"production"</span><span class="op">;</span> <span class="va">$env</span><span class="op">:</span><span class="va">PORT</span><span class="op">=</span><span class="st">"8080"</span><span class="op">;</span> npm run <span class="fu">start</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+</section>
+<section id="代码质量检查与验证规范" class="level2">
+<h2 class="anchored" data-anchor-id="代码质量检查与验证规范">9. 代码质量检查与验证规范</h2>
+<section id="typescript-类型检查规范" class="level3">
+<h3 class="anchored" data-anchor-id="typescript-类型检查规范">9.1 TypeScript 类型检查规范</h3>
+<p><strong>重要原则</strong>: AI写完代码后，必须进行类型检查和语法检查，确保没有错误后才能部署到线上。</p>
+<ul>
+<li><p><strong>类型检查命令</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 类型检查（不生成文件，仅检查类型）</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> tsc <span class="at">--noEmit</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 或使用 npm script</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run type-check</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>构建验证命令</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 完整构建检查</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 或者分步检查</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run lint        <span class="co"># 代码规范检查</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run type-check  <span class="co"># 类型检查</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build       <span class="co"># 构建检查</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>TypeScript 配置要求</strong> (<code>tsconfig.json</code>): <code>json {   "compilerOptions": {     "strict": true,              // 启用严格模式     "noImplicitAny": true,       // 禁止隐式 any     "strictNullChecks": true,    // 严格空值检查     "noImplicitReturns": true,   // 函数必须有返回值     "noUnusedLocals": true,      // 🔧 可选：检查未使用的局部变量     "noUnusedParameters": true,  // 🔧 可选：检查未使用的参数     "exactOptionalPropertyTypes": true // 🔧 可选：精确可选属性类型   } }</code></p></li>
+</ul>
+</section>
+<section id="代码质量检查流程" class="level3">
+<h3 class="anchored" data-anchor-id="代码质量检查流程">9.2 代码质量检查流程</h3>
+<blockquote class="blockquote">
+<p>🎯 <strong>目标</strong>: 建立严格的代码质量保障体系，确保代码质量和项目稳定性</p>
+<p>⚡ <strong>执行时机</strong>: 每次提交前、构建前、部署前</p>
+</blockquote>
+<p><strong>强制性检查步骤</strong> - AI 完成代码编写后必须执行：</p>
+<ol type="1">
+<li><p><strong>第一步：类型检查</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> tsc <span class="at">--noEmit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>必须确保没有任何 TypeScript 类型错误</li>
+<li>严禁使用 <code>any</code> 类型，必须明确定义所有类型</li>
+<li>如有类型错误，必须立即修复后再进行下一步</li>
+</ul></li>
+<li><p><strong>第二步：代码规范检查</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run lint</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>检查代码风格和潜在问题</li>
+<li>自动修复可修复的问题：<code>npm run lint:fix</code></li>
+</ul></li>
+<li><p><strong>第三步：构建验证</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>验证代码能够成功构建</li>
+<li>检查是否有运行时可能出现的问题</li>
+<li>确保所有依赖和导入正确</li>
+</ul></li>
+<li><p><strong>第四步：测试验证 (可选)</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run test  <span class="co"># 🔧 仅在项目配置了测试时执行</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>仅在项目包含测试配置文件时执行</li>
+<li>如无测试配置，可跳过此步骤</li>
+</ul></li>
+</ol>
+</section>
+<section id="错误处理与修复规范" class="level3">
+<h3 class="anchored" data-anchor-id="错误处理与修复规范">9.3 错误处理与修复规范</h3>
+<ul>
+<li><p><strong>类型错误修复</strong>:</p>
+<ul>
+<li>为所有函数参数和返回值添加明确的类型注解</li>
+<li>使用 TypeScript 的联合类型、交叉类型等高级特性</li>
+<li>避免使用 <code>any</code>，改用 <code>unknown</code> 或具体类型</li>
+</ul></li>
+<li><p><strong>构建错误修复</strong>:</p>
+<ul>
+<li>检查所有 import/export 语句</li>
+<li>确保所有依赖包已正确安装</li>
+<li>验证环境变量和配置文件</li>
+</ul></li>
+<li><p><strong>示例：正确的类型定义</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">// ❌ 错误：使用 any</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">processData</span>(data<span class="op">:</span> <span class="dt">any</span>)<span class="op">:</span> <span class="dt">any</span> {</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data<span class="op">.</span><span class="at">someProperty</span><span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co">// ✅ 正确：明确类型定义</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="kw">interface</span> UserData {</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  id<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  name<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  email<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">processUserData</span>(data<span class="op">:</span> UserData)<span class="op">:</span> <span class="dt">string</span> {</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> data<span class="op">.</span><span class="at">name</span><span class="op">;</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="co">// ✅ 正确：使用泛型</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">processApiResponse</span><span class="op">&lt;</span>T<span class="op">&gt;</span>(response<span class="op">:</span> { data<span class="op">:</span> T<span class="op">;</span> status<span class="op">:</span> <span class="dt">number</span> })<span class="op">:</span> T {</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> response<span class="op">.</span><span class="at">data</span><span class="op">;</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="预提交检查规范" class="level3">
+<h3 class="anchored" data-anchor-id="预提交检查规范">9.4 预提交检查规范</h3>
+<p><strong>部署前必检项目</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 完整的预提交检查脚本</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"🔍 开始代码质量检查..."</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. TypeScript 类型检查</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"📝 执行 TypeScript 类型检查..."</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> tsc <span class="at">--noEmit</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"❌ TypeScript 类型检查失败，请修复类型错误"</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"✅ TypeScript 类型检查通过"</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. ESLint 检查</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"🔧 执行代码规范检查..."</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run lint</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"❌ 代码规范检查失败，请修复代码规范问题"</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"✅ 代码规范检查通过"</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 构建检查</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"🏗️ 执行构建检查..."</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"❌ 构建失败，请检查代码和依赖"</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a>  <span class="bu">exit</span> 1</span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"✅ 构建检查通过"</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 测试检查（可选 - 仅在配置了测试时执行）</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"jest.config.js"</span> <span class="bu">]</span> <span class="kw">||</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">"jest.config.ts"</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"🧪 执行测试..."</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a>  <span class="ex">npm</span> run test</span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="bu">[</span> <span class="va">$?</span> <span class="ot">-ne</span> 0 <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">"❌ 测试失败，请修复测试问题"</span></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">fi</span></span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"✅ 测试通过"</span></span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span></span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a>  <span class="bu">echo</span> <span class="st">"ℹ️ 未检测到测试配置，跳过测试步骤"</span></span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"🎉 所有检查通过，代码可以部署！"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="powershell-版本检查脚本" class="level3">
+<h3 class="anchored" data-anchor-id="powershell-版本检查脚本">9.5 PowerShell 版本检查脚本</h3>
+<p>针对 Windows PowerShell 环境的检查脚本：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pre-deploy-check.ps1</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"🔍 开始代码质量检查..."</span> <span class="op">-</span>ForegroundColor Blue</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. TypeScript 类型检查</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"📝 执行 TypeScript 类型检查..."</span> <span class="op">-</span>ForegroundColor Yellow</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>npx tsc <span class="op">--</span>noEmit</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="va">$LASTEXITCODE</span> <span class="op">-ne</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">"❌ TypeScript 类型检查失败，请修复类型错误"</span> <span class="op">-</span>ForegroundColor Red</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">exit</span> <span class="dv">1</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"✅ TypeScript 类型检查通过"</span> <span class="op">-</span>ForegroundColor Green</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. ESLint 检查</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"🔧 执行代码规范检查..."</span> <span class="op">-</span>ForegroundColor Yellow</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>npm run lint</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="va">$LASTEXITCODE</span> <span class="op">-ne</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">"❌ 代码规范检查失败，请修复代码规范问题"</span> <span class="op">-</span>ForegroundColor Red</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">exit</span> <span class="dv">1</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"✅ 代码规范检查通过"</span> <span class="op">-</span>ForegroundColor Green</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 构建检查</span></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"🏗️ 执行构建检查..."</span> <span class="op">-</span>ForegroundColor Yellow</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>npm run build</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="va">$LASTEXITCODE</span> <span class="op">-ne</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">"❌ 构建失败，请检查代码和依赖"</span> <span class="op">-</span>ForegroundColor Red</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">exit</span> <span class="dv">1</span></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"✅ 构建检查通过"</span> <span class="op">-</span>ForegroundColor Green</span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 测试检查（可选 - 仅在配置了测试时执行）</span></span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span><span class="fu">Test-Path</span> <span class="st">"jest.config.js"</span> <span class="op">-Or</span> <span class="fu">Test-Path</span> <span class="st">"jest.config.ts"</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">"🧪 执行测试..."</span> <span class="op">-</span>ForegroundColor Yellow</span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>    npm run test</span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span><span class="va">$LASTEXITCODE</span> <span class="op">-ne</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Write-Host</span> <span class="st">"❌ 测试失败，请修复测试问题"</span> <span class="op">-</span>ForegroundColor Red</span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">exit</span> <span class="dv">1</span></span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">"✅ 测试通过"</span> <span class="op">-</span>ForegroundColor Green</span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Write-Host</span> <span class="st">"ℹ️ 未检测到测试配置，跳过测试步骤"</span> <span class="op">-</span>ForegroundColor Cyan</span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a><span class="fu">Write-Host</span> <span class="st">"🎉 所有检查通过，代码可以部署！"</span> <span class="op">-</span>ForegroundColor Green</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="开发调试规范" class="level3">
+<h3 class="anchored" data-anchor-id="开发调试规范">9.6 开发调试规范</h3>
+<p>写代码的时候要及时预留关键变量打印，方便调试。在服务层函数中适当添加 <code>console.log</code> 来跟踪数据流和业务逻辑执行情况。</p>
+</section>
+</section>
+<section id="错误处理与文档维护规范" class="level2">
+<h2 class="anchored" data-anchor-id="错误处理与文档维护规范">10. 错误处理与文档维护规范</h2>
+<section id="错误处理流程" class="level3">
+<h3 class="anchored" data-anchor-id="错误处理流程">9.1 错误处理流程</h3>
+<ul>
+<li><strong>错误发现</strong>: 在开发、测试或生产环境中发现错误时，应立即记录错误详情。</li>
+<li><strong>错误修复</strong>: 修复错误后，必须进行充分测试确保问题解决。</li>
+<li><strong>文档同步</strong>: <strong>重要</strong>: 错误修复后，必须及时让AI将修复后的代码和相关文档导入到 <code>/docs</code> 目录中，确保文档与代码保持同步。</li>
+</ul>
+</section>
+<section id="文档维护规范" class="level3">
+<h3 class="anchored" data-anchor-id="文档维护规范">9.2 文档维护规范</h3>
+<ul>
+<li><p><strong>文档结构</strong>:</p>
+<pre><code>/docs/
+├── api/                 # API 文档
+├── architecture/        # 架构设计文档
+├── deployment/          # 部署相关文档
+├── troubleshooting/     # 故障排除指南
+└── changelog/           # 变更日志</code></pre></li>
+<li><p><strong>文档更新触发条件</strong>:</p>
+<ul>
+<li>修复重要错误后</li>
+<li>添加新功能后</li>
+<li>修改架构设计后</li>
+<li>更新部署流程后</li>
+</ul></li>
+<li><p><strong>文档内容要求</strong>:</p>
+<ul>
+<li>包含错误描述、原因分析、解决方案</li>
+<li>提供代码示例和配置说明</li>
+<li>记录相关的环境变量和依赖变更</li>
+<li>更新相关的API文档和使用说明</li>
+</ul></li>
+</ul>
+</section>
+<section id="错误日志规范" class="level3">
+<h3 class="anchored" data-anchor-id="错误日志规范">9.3 错误日志规范</h3>
+<ul>
+<li><strong>日志级别</strong>: 使用标准日志级别 (ERROR, WARN, INFO, DEBUG)</li>
+<li><strong>错误上下文</strong>: 记录足够的上下文信息便于问题定位</li>
+<li><strong>敏感信息</strong>: 严禁在日志中记录密码、密钥等敏感信息</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a> <span class="co">// 错误处理示例</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a> <span class="cf">try</span> {</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>   <span class="kw">const</span> result <span class="op">=</span> <span class="cf">await</span> <span class="fu">someOperation</span>()<span class="op">;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>   <span class="bu">console</span><span class="op">.</span><span class="fu">info</span>(<span class="st">'操作成功完成'</span><span class="op">,</span> { userId<span class="op">,</span> operationType<span class="op">:</span> <span class="st">'create_post'</span> })<span class="op">;</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a> } <span class="cf">catch</span> (error) {</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>   <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="st">'操作失败'</span><span class="op">,</span> { </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>     userId<span class="op">,</span> </span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>     operationType<span class="op">:</span> <span class="st">'create_post'</span><span class="op">,</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>     error<span class="op">:</span> error<span class="op">.</span><span class="at">message</span><span class="op">,</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>     stack<span class="op">:</span> error<span class="op">.</span><span class="at">stack</span> </span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>   })<span class="op">;</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>   <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">Error</span>(<span class="st">'创建帖子失败，请稍后重试'</span>)<span class="op">;</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a> }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="完整项目生命周期管理" class="level2">
+<h2 class="anchored" data-anchor-id="完整项目生命周期管理">11. 完整项目生命周期管理</h2>
+<section id="项目初始化阶段" class="level3">
+<h3 class="anchored" data-anchor-id="项目初始化阶段">11.1 项目初始化阶段</h3>
+<ul>
+<li><p><strong>环境准备</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 创建项目</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npx</span> create-next-app@latest project-name <span class="at">--typescript</span> <span class="at">--tailwind</span> <span class="at">--eslint</span> <span class="at">--app</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 安装核心依赖</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install prisma @prisma/client next-auth @auth/prisma-adapter</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install @vercel/ai ai openai</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install @aws-sdk/client-s3</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install ioredis</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install cross-env</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 安装开发依赖 (可选)</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install <span class="at">-D</span> tsx jest @types/jest  <span class="co"># 🔧 可选：测试相关依赖</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>项目结构初始化</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建必要目录</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> src/services src/lib prisma docs</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> docs/<span class="dt">{api</span><span class="op">,</span><span class="dt">architecture</span><span class="op">,</span><span class="dt">deployment</span><span class="op">,</span><span class="dt">troubleshooting</span><span class="op">,</span><span class="dt">changelog}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>配置文件设置</strong>:</p>
+<ul>
+<li>配置 <code>prisma/schema.prisma</code></li>
+<li>设置 <code>.env.local</code> 和 <code>.env.example</code></li>
+<li>配置 <code>middleware.ts</code></li>
+<li>设置 <code>tailwind.config.js</code> 和 <code>next.config.js</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="开发阶段" class="level3">
+<h3 class="anchored" data-anchor-id="开发阶段">11.2 开发阶段</h3>
+<ul>
+<li><p><strong>功能开发流程</strong>:</p>
+<ol type="1">
+<li>创建功能分支: <code>git checkout -b feature/new-feature</code></li>
+<li>数据库模型设计: 修改 <code>prisma/schema.prisma</code></li>
+<li>生成 Prisma 客户端: <code>npm run db:generate</code></li>
+<li>创建数据库迁移: <code>npm run db:migrate</code></li>
+<li>实现服务层逻辑: 在 <code>src/services/</code> 中创建业务服务</li>
+<li>实现 API 路由: 在 <code>src/app/api/</code> 中创建接口</li>
+<li>实现前端组件: 在 <code>src/components/</code> 和 <code>src/app/</code> 中创建页面</li>
+<li>编写测试: 在 <code>__tests__/</code> 目录中添加测试用例</li>
+</ol></li>
+<li><p><strong>代码质量检查</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 类型检查</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run type-check</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 代码规范检查</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run lint</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 自动修复代码规范问题</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run lint:fix</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 运行测试</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="测试阶段-可选" class="level3">
+<h3 class="anchored" data-anchor-id="测试阶段-可选">11.3 测试阶段 (可选)</h3>
+<p>🔧 <strong>可选阶段</strong> - 根据项目规模和质量要求决定是否实施完整的测试流程。</p>
+<ul>
+<li><p><strong>测试类型</strong>:</p>
+<ul>
+<li><strong>单元测试</strong>: 测试服务层函数和工具函数</li>
+<li><strong>集成测试</strong>: 测试 API 路由和数据库交互</li>
+<li><strong>端到端测试</strong>: 测试完整的用户流程</li>
+</ul></li>
+<li><p><strong>测试环境配置</strong>:</p>
+<pre class="env"><code># .env.test
+NODE_ENV=test
+DATABASE_URL="postgresql://user:password@localhost:5432/myapp_test"</code></pre></li>
+<li><p><strong>测试数据管理</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">// prisma/seed.ts</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { PrismaClient } <span class="im">from</span> <span class="st">'@prisma/client'</span><span class="op">;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> prisma <span class="op">=</span> <span class="kw">new</span> <span class="fu">PrismaClient</span>()<span class="op">;</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="kw">async</span> <span class="kw">function</span> <span class="fu">main</span>() {</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 创建测试数据</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">await</span> prisma<span class="op">.</span><span class="at">user</span><span class="op">.</span><span class="fu">createMany</span>({</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    data<span class="op">:</span> [</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>      { email<span class="op">:</span> <span class="st">'test1@example.com'</span><span class="op">,</span> name<span class="op">:</span> <span class="st">'Test User 1'</span> }<span class="op">,</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>      { email<span class="op">:</span> <span class="st">'test2@example.com'</span><span class="op">,</span> name<span class="op">:</span> <span class="st">'Test User 2'</span> }<span class="op">,</span></span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a><span class="fu">main</span>()</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">catch</span>((e) <span class="kw">=&gt;</span> <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(e))</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">finally</span>(<span class="kw">async</span> () <span class="kw">=&gt;</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="fu">$disconnect</span>())<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="构建与部署阶段" class="level3">
+<h3 class="anchored" data-anchor-id="构建与部署阶段">11.4 构建与部署阶段</h3>
+<ul>
+<li><p><strong>构建前检查</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 确保所有测试通过 (可选)</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run test  <span class="co"># 🔧 仅在配置了测试时执行</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 类型检查</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run type-check</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 代码规范检查</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run lint</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 构建应用</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run build</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>部署前准备</strong>:</p>
+<ul>
+<li>确保生产环境变量配置正确</li>
+<li>运行生产数据库迁移: <code>npm run db:migrate:prod</code></li>
+<li>验证所有外部服务连接 (数据库、Redis、OSS)</li>
+</ul></li>
+<li><p><strong>部署流程</strong>:</p>
+<ol type="1">
+<li>合并代码到主分支</li>
+<li>服务器拉取最新代码</li>
+<li>安装生产依赖</li>
+<li>构建应用</li>
+<li>运行数据库迁移</li>
+<li>重启服务</li>
+</ol></li>
+</ul>
+</section>
+<section id="监控与维护阶段" class="level3">
+<h3 class="anchored" data-anchor-id="监控与维护阶段">11.5 监控与维护阶段</h3>
+<ul>
+<li><p><strong>性能监控 (可选)</strong>:</p>
+<ul>
+<li>应用性能监控 (APM) 🔧 可选</li>
+<li>数据库性能监控 🔧 可选</li>
+<li>服务器资源监控</li>
+<li>用户体验监控 🔧 可选</li>
+</ul></li>
+<li><p><strong>日志管理</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">// lib/logger.ts</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> logger <span class="op">=</span> {</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  info<span class="op">:</span> (message<span class="op">:</span> <span class="dt">string</span><span class="op">,</span> meta<span class="op">?:</span> <span class="dt">object</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ level<span class="op">:</span> <span class="st">'info'</span><span class="op">,</span> message<span class="op">,</span> meta<span class="op">,</span> timestamp<span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>()<span class="op">.</span><span class="fu">toISOString</span>() }))<span class="op">;</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  error<span class="op">:</span> (message<span class="op">:</span> <span class="dt">string</span><span class="op">,</span> error<span class="op">?:</span> <span class="bu">Error</span><span class="op">,</span> meta<span class="op">?:</span> <span class="dt">object</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>({ </span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>      level<span class="op">:</span> <span class="st">'error'</span><span class="op">,</span> </span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>      message<span class="op">,</span> </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>      error<span class="op">:</span> error<span class="op">?.</span><span class="at">message</span><span class="op">,</span> </span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>      stack<span class="op">:</span> error<span class="op">?.</span><span class="at">stack</span><span class="op">,</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>      meta<span class="op">,</span> </span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>      timestamp<span class="op">:</span> <span class="kw">new</span> <span class="bu">Date</span>()<span class="op">.</span><span class="fu">toISOString</span>() </span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    }))<span class="op">;</span></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p><strong>备份策略</strong>:</p>
+<ul>
+<li>数据库定期备份</li>
+<li>代码仓库备份</li>
+<li>配置文件备份</li>
+<li>静态资源备份</li>
+</ul></li>
+</ul>
+</section>
+<section id="安全管理" class="level3">
+<h3 class="anchored" data-anchor-id="安全管理">11.6 安全管理</h3>
+<ul>
+<li><p><strong>安全检查清单</strong>:</p>
+<ul class="task-list">
+<li><label><input type="checkbox">环境变量安全 (不提交敏感信息到代码仓库)</label></li>
+<li><label><input type="checkbox">数据库连接安全 (使用 SSL)</label></li>
+<li><label><input type="checkbox">API 接口安全 (认证和授权)</label></li>
+<li><label><input type="checkbox">文件上传安全 (类型和大小限制)</label></li>
+<li><label><input type="checkbox">XSS 和 CSRF 防护</label></li>
+<li><label><input type="checkbox">依赖包安全扫描</label></li>
+</ul></li>
+<li><p><strong>定期安全维护</strong>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查依赖包漏洞</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> audit</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 修复已知漏洞</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> audit fix</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 更新依赖包</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> update</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="文档维护" class="level3">
+<h3 class="anchored" data-anchor-id="文档维护">11.7 文档维护</h3>
+<ul>
+<li><strong>文档更新触发点</strong>:
+<ul>
+<li>新功能发布</li>
+<li>API 接口变更</li>
+<li>部署流程变更</li>
+<li>安全策略更新</li>
+<li>重大 Bug 修复</li>
+</ul></li>
+<li><strong>文档类型</strong>:
+<ul>
+<li>API 文档 (自动生成 + 手动维护)</li>
+<li>架构设计文档</li>
+<li>部署运维文档</li>
+<li>故障排除指南</li>
+<li>变更日志</li>
+</ul></li>
+</ul>
+</section>
+<section id="版本发布管理" class="level3">
+<h3 class="anchored" data-anchor-id="版本发布管理">11.8 版本发布管理</h3>
+<ul>
+<li><strong>版本号规范</strong>: 遵循 <a href="https://semver.org/lang/zh-CN/">语义化版本</a> (Semantic Versioning)
+<ul>
+<li><code>MAJOR.MINOR.PATCH</code> (主版本.次版本.修订版本)</li>
+<li>主版本: 不兼容的 API 修改</li>
+<li>次版本: 向下兼容的功能性新增</li>
+<li>修订版本: 向下兼容的问题修正</li>
+</ul></li>
+<li><strong>发布流程</strong>:
+<ol type="1">
+<li>创建发布分支: <code>git checkout -b release/v1.2.0</code></li>
+<li>更新版本号: 修改 <code>package.json</code> 中的 version</li>
+<li>更新 CHANGELOG.md</li>
+<li>合并到主分支并打标签: <code>git tag v1.2.0</code></li>
+<li>部署到生产环境</li>
+<li>发布公告和文档更新</li>
+</ol></li>
+</ul>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

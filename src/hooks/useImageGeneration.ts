@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useAppStore } from '@/stores/useAppStore';
-import { ImageGenerationRequest, ImageGenerationResponse } from '@/types';
+import { ImageGenerationResponse } from '@/types';
 import { API_ENDPOINTS, ERROR_MESSAGES } from '@/lib/constants';
 import { handleApiError } from '@/utils';
 import toast from 'react-hot-toast';
@@ -11,16 +11,21 @@ export function useImageGeneration() {
     uploadedFile,
     selectedStyle,
     quantity,
-    customPrompt,
+    sceneDescription,
     setGenerationProgress,
     setGeneratedImages,
     setIsGenerating,
-    addGeneratedImage,
   } = useAppStore();
 
   const generateImages = useCallback(async () => {
     if (!uploadedFile || !selectedStyle) {
       toast.error('请先上传图片并选择风格');
+      return;
+    }
+
+    // 如果选择的是场景图，验证场景描述
+    if (selectedStyle.requiresScene && !sceneDescription) {
+      toast.error('请填写场景描述');
       return;
     }
 
@@ -42,8 +47,8 @@ export function useImageGeneration() {
       formData.append('productImage', uploadedFile.file);
       formData.append('style', selectedStyle.id);
       formData.append('quantity', quantity.toString());
-      if (customPrompt) {
-        formData.append('customPrompt', customPrompt);
+      if (sceneDescription) {
+        formData.append('sceneDescription', sceneDescription);
       }
 
       // 更新进度：分析图片
@@ -97,7 +102,7 @@ export function useImageGeneration() {
         const generatedImages = result.images.map((url, index) => ({
           id: `${Date.now()}-${index}`,
           url,
-          prompt: `${selectedStyle.prompt}${customPrompt ? ` ${customPrompt}` : ''}`,
+          prompt: selectedStyle.prompt,
           style: selectedStyle.name,
           timestamp: Date.now(),
         }));
@@ -135,7 +140,7 @@ export function useImageGeneration() {
       setIsLoading(false);
       setIsGenerating(false);
     }
-  }, [uploadedFile, selectedStyle, quantity, customPrompt, setGenerationProgress, setGeneratedImages, setIsGenerating]);
+  }, [uploadedFile, selectedStyle, quantity, sceneDescription, setGenerationProgress, setGeneratedImages, setIsGenerating]);
 
   return {
     generateImages,

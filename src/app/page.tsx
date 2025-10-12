@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -8,17 +8,18 @@ import { ThemeToggle } from '@/components/ui/theme-toggle'
 import { ImageUploader } from '@/components/features/ImageUploader'
 import { StyleSelector } from '@/components/features/StyleSelector'
 import { QuantitySelector } from '@/components/features/QuantitySelector'
-import { ProgressIndicator } from '@/components/features/ProgressIndicator'
+import { AgentWorkflowProgress } from '@/components/features/AgentWorkflowProgress'
 import { ResultsDisplay } from '@/components/features/ResultsDisplay'
 import { useAppStore } from '@/stores/useAppStore'
+import type { GenerateApiResponse } from '@/types'
 import { Sparkles, Wand2, Image as ImageIcon, Download, Eye, Loader2, Check, Zap, Clock, Grid3X3 } from 'lucide-react'
 
 export default function Home() {
   const { 
     uploadedFile, 
     selectedStyle, 
-    quantity, 
-    customPrompt,
+    quantity,
+    sceneDescription,
     isGenerating, 
     generationProgress, 
     generatedImages,
@@ -30,8 +31,13 @@ export default function Home() {
   const [activeStep, setActiveStep] = useState(1)
 
   const generateImages = async () => {
-    if (!uploadedFile || !selectedStyle) return
+    console.log('=== generateImages 开始 ===')
+    if (!uploadedFile || !selectedStyle) {
+      console.log('❌ generateImages: 缺少必要条件')
+      return
+    }
     
+    console.log('✅ 开始设置生成状态')
     setIsGenerating(true)
     setGenerationProgress({
       status: 'uploading',
@@ -43,49 +49,138 @@ export default function Home() {
 
     try {
       // 准备FormData
+      console.log('📦 准备FormData')
       const formData = new FormData()
       formData.append('productImage', uploadedFile.file)
       formData.append('style', selectedStyle.id)
       formData.append('quantity', quantity.toString())
-      if (customPrompt) {
-        formData.append('customPrompt', customPrompt)
+      // 如果有场景描述，添加到FormData
+      if (sceneDescription) {
+        console.log('✅ 添加场景描述:', sceneDescription)
+        formData.append('sceneDescription', sceneDescription)
+      } else {
+        console.log('⚠️ 没有场景描述')
       }
 
-      setGenerationProgress({
-        status: 'analyzing',
-        progress: 30,
-        message: '正在分析产品图片...',
-        currentStep: 2,
-        totalSteps: 4,
-      })
+      console.log('📝 FormData内容:')
+      console.log('  - productImage:', uploadedFile.file.name)
+      console.log('  - style:', selectedStyle.id)
+      console.log('  - quantity:', quantity)
+      console.log('  - sceneDescription:', sceneDescription || '(无)')
 
-      // 调用生成API
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        body: formData,
-      })
-
-      const result = await response.json()
-
-      if (!response.ok || !result.success) {
-        throw new Error(result.error || '生成失败')
+      // 模拟进度更新函数
+      let progressInterval: NodeJS.Timeout | null = null
+      let currentProgress = 10
+      
+      const startProgressSimulation = () => {
+        progressInterval = setInterval(() => {
+          currentProgress += 1
+          
+          // 根据进度显示不同的消息
+          if (currentProgress <= 40) {
+            setGenerationProgress({
+              status: 'analyzing',
+              progress: currentProgress,
+              message: 'AI正在深度分析产品特征、材质、颜色等信息...',
+              currentStep: 2,
+              totalSteps: 4,
+            })
+          } else if (currentProgress <= 50) {
+            setGenerationProgress({
+              status: 'generating',
+              progress: currentProgress,
+              message: '基于产品特征生成专业的摄影方案...',
+              currentStep: 3,
+              totalSteps: 4,
+            })
+          } else if (currentProgress <= 60) {
+            setGenerationProgress({
+              status: 'generating',
+              progress: currentProgress,
+              message: '为每个视角设计最佳的构图和光线...',
+              currentStep: 3,
+              totalSteps: 4,
+            })
+          } else if (currentProgress < 90) {
+            setGenerationProgress({
+              status: 'generating',
+              progress: currentProgress,
+              message: `AI正在生成第 ${Math.floor((currentProgress - 60) / 30 * quantity) + 1} 张图片...`,
+              currentStep: 3,
+              totalSteps: 4,
+            })
+          }
+          
+          // 最多到90%，留10%给实际完成
+          if (currentProgress >= 90) {
+            if (progressInterval) {
+              clearInterval(progressInterval)
+            }
+          }
+        }, 1000) // 每秒更新一次
       }
 
-      setGenerationProgress({
-        status: 'generating',
-        progress: 70,
-        message: '正在生成图片...',
-        currentStep: 3,
-        totalSteps: 4,
-      })
+      // 开始模拟进度
+      startProgressSimulation()
+
+      let result: GenerateApiResponse
+
+      try {
+        // 调用生成API
+        console.log('🚀 发送API请求到 /api/generate')
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          body: formData,
+        })
+        
+        console.log('📥 收到API响应:', response.status, response.statusText)
+
+        // 停止进度模拟
+        if (progressInterval) {
+          clearInterval(progressInterval)
+        }
+
+        result = await response.json()
+
+        if (!response.ok || !result.success) {
+          const errorMessage = result.error || '生成失败'
+          
+          // 检查是否是超时错误
+          if (errorMessage.includes('timeout') || errorMessage.includes('超时')) {
+            throw new Error('AI图片生成超时，这通常是由于网络延迟或服务器负载较高导致的。请稍后重试，或尝试减少生成数量。')
+          }
+          
+          // 检查是否是网络错误
+          if (errorMessage.includes('network') || errorMessage.includes('网络')) {
+            throw new Error('网络连接错误，请检查网络连接后重试。')
+          }
+          
+          throw new Error(errorMessage)
+        }
+
+        // API成功，显示最终生成阶段
+        setGenerationProgress({
+          status: 'generating',
+          progress: 95,
+          message: '正在保存生成的图片...',
+          currentStep: 4,
+          totalSteps: 4,
+        })
+      } catch (apiError) {
+        // 停止进度模拟
+        if (progressInterval) {
+          clearInterval(progressInterval)
+        }
+        throw apiError
+      }
 
       // 处理生成的图片
-      if (result.images && result.images.length > 0) {
+      if (result && result.images && result.images.length > 0) {
         result.images.forEach((imageUrl: string, index: number) => {
           addGeneratedImage({
             id: `generated-${Date.now()}-${index}`,
             url: imageUrl,
-            prompt: result.prompt || (selectedStyle.prompt + (customPrompt ? ' ' + customPrompt : '')),
+            prompt: result.prompt || selectedStyle.prompt,
             style: selectedStyle.name,
             timestamp: Date.now(),
           })
@@ -101,10 +196,21 @@ export default function Home() {
       })
     } catch (error) {
       console.error('图片生成失败:', error)
+      
+      let errorMessage = '生成失败，请重试'
+      if (error instanceof Error) {
+        errorMessage = error.message
+        
+        // 为超时错误添加额外的建议
+        if (error.message.includes('超时')) {
+          errorMessage += '\n\n💡 建议：\n• 尝试减少生成数量\n• 检查网络连接\n• 稍后重试'
+        }
+      }
+      
       setGenerationProgress({
         status: 'error',
         progress: 0,
-        message: error instanceof Error ? error.message : '生成失败，请重试',
+        message: errorMessage,
         currentStep: 0,
         totalSteps: 4,
       })
@@ -114,13 +220,65 @@ export default function Home() {
   }
 
   const handleGenerate = async () => {
-    if (!uploadedFile || !selectedStyle) return
+    console.log('=== handleGenerate 开始 ===')
+    console.log('uploadedFile:', uploadedFile)
+    console.log('selectedStyle:', selectedStyle)
+    console.log('sceneDescription:', sceneDescription)
+    console.log('requiresScene:', selectedStyle?.requiresScene)
     
+    if (!uploadedFile || !selectedStyle) {
+      console.log('❌ 缺少必要条件')
+      return
+    }
+    
+    // 如果选择了场景图，验证场景描述
+    if (selectedStyle.requiresScene && !sceneDescription) {
+      console.log('❌ 需要场景描述但未填写')
+      alert('请填写场景描述')
+      return
+    }
+    
+    console.log('✅ 验证通过，开始生成')
     setActiveStep(4)
     await generateImages()
   }
 
-  const canGenerate = uploadedFile && selectedStyle && !isGenerating
+  // 计算是否可以生成
+  const canGenerate = useMemo(() => {
+    console.log('=== canGenerate 计算 ===')
+    console.log('  uploadedFile:', !!uploadedFile)
+    console.log('  selectedStyle:', !!selectedStyle, selectedStyle?.id, selectedStyle?.name)
+    console.log('  isGenerating:', isGenerating)
+    console.log('  requiresScene:', selectedStyle?.requiresScene)
+    console.log('  sceneDescription:', `"${sceneDescription}"`)
+    console.log('  sceneDescription.trim():', `"${sceneDescription?.trim()}"`)
+    
+    if (!uploadedFile) {
+      console.log('  ❌ 没有上传文件')
+      return false
+    }
+    if (!selectedStyle) {
+      console.log('  ❌ 没有选择风格')
+      return false
+    }
+    if (isGenerating) {
+      console.log('  ❌ 正在生成中')
+      return false
+    }
+    
+    // 如果需要场景描述，检查是否已填写
+    if (selectedStyle.requiresScene) {
+      const hasSceneDesc = sceneDescription && sceneDescription.trim().length > 0
+      console.log('  需要场景描述，hasSceneDesc:', hasSceneDesc)
+      if (!hasSceneDesc) {
+        console.log('  ❌ 需要场景描述但未填写')
+        return false
+      }
+    }
+    
+    console.log('  ✅ 可以生成')
+    return true
+  }, [uploadedFile, selectedStyle, isGenerating, sceneDescription])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
@@ -230,13 +388,20 @@ export default function Home() {
                   生成设置
                 </CardTitle>
                 <CardDescription>
-                  设置生成数量和自定义提示词
+                  设置生成数量，AI将自动为每张图片选择最佳角度
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <QuantitySelector />
               </CardContent>
             </Card>
+
+            {/* AI工作流进度 - 生成时显示 */}
+            {isGenerating && (
+              <div className="animate-in slide-in-from-top duration-500">
+                <AgentWorkflowProgress />
+              </div>
+            )}
           </div>
 
           {/* Right Column - Preview & Actions */}
@@ -273,12 +438,7 @@ export default function Home() {
                     <span className="text-muted-foreground">生成数量:</span>
                     <Badge variant="secondary">{quantity}张</Badge>
                   </div>
-                  {customPrompt && (
-                    <div className="text-sm">
-                      <span className="text-muted-foreground">自定义提示:</span>
-                      <p className="mt-1 p-2 bg-muted rounded text-xs">{customPrompt}</p>
-                    </div>
-                  )}
+
                 </div>
 
                 {/* Generate Button */}
@@ -301,10 +461,14 @@ export default function Home() {
                   )}
                 </Button>
 
-                {/* Progress */}
+                {/* 简化进度提示 */}
                 {isGenerating && (
                   <div className="space-y-2 animate-fade-in">
-                    <ProgressIndicator />
+                    <div className="text-center p-4 border border-primary/20 rounded-xl bg-primary/5">
+                      <Loader2 className="w-6 h-6 mx-auto mb-2 animate-spin text-primary" />
+                      <p className="text-sm font-medium text-foreground">AI创作中</p>
+                      <p className="text-xs text-muted-foreground mt-1">请查看左侧详细进度</p>
+                    </div>
                   </div>
                 )}
 

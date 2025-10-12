@@ -1,0 +1,20 @@
+{
+  "name": "doubao-image-generator",
+  "version": "1.0.0",
+  "description": "豆包AI图片生成完整Pipeline - 识别→生成→组图",
+  "type": "module",
+  "scripts": {
+    "generate": "node generate-ecommerce.js",
+    "analyze": "node analyze-image.js",
+    "prompt": "node generate-prompt.js",
+    "pipeline": "node pipeline-full.js",
+    "pipeline:closeup": "node pipeline-full.js stone_img.jpg closeup",
+    "pipeline:scene": "node pipeline-full.js stone_img.jpg scene",
+    "pipeline:interactive": "node pipeline-interactive.js",
+    "start": "node pipeline-interactive.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7"
+  }
+}

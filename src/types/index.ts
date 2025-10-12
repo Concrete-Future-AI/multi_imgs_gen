@@ -20,6 +20,7 @@ export interface StyleOption {
   description: string;
   preview: string;
   prompt: string;
+  requiresScene?: boolean; // 是否需要场景描述
 }
 
 // 上传文件类型
@@ -46,6 +47,36 @@ export interface ApiResponse<T = unknown> {
   message?: string;
 }
 
+// API错误响应类型
+export interface ApiErrorResponse {
+  error: {
+    message: string;
+    code?: string;
+    details?: unknown;
+  };
+}
+
+// Axios错误类型
+export interface AxiosError extends Error {
+  response?: {
+    data?: ApiErrorResponse;
+    status: number;
+    statusText: string;
+  };
+  request?: unknown;
+  config?: unknown;
+}
+
+// 图片生成API响应类型
+export interface GenerateApiResponse {
+  success: boolean;
+  images?: string[];
+  analysis?: string;
+  prompt?: string;
+  error?: string;
+  requestId?: string;
+}
+
 // 产品分析结果类型
 export interface ProductAnalysis {
   category: string;
@@ -69,7 +100,7 @@ export interface AppState {
   uploadedFile: UploadedFile | null;
   selectedStyle: StyleOption | null;
   quantity: number;
-  customPrompt: string;
+  sceneDescription: string; // 场景描述
   generationProgress: GenerationProgress;
   generatedImages: GeneratedImage[];
   isGenerating: boolean;

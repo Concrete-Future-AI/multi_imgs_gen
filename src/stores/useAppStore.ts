@@ -7,7 +7,7 @@ interface AppStore extends AppState {
   setUploadedFile: (file: UploadedFile | null) => void;
   setSelectedStyle: (style: StyleOption | null) => void;
   setQuantity: (quantity: number) => void;
-  setCustomPrompt: (prompt: string) => void;
+  setSceneDescription: (description: string) => void;
   setGenerationProgress: (progress: GenerationProgress) => void;
   setGeneratedImages: (images: GeneratedImage[]) => void;
   setIsGenerating: (isGenerating: boolean) => void;
@@ -20,7 +20,7 @@ const initialState: AppState = {
   uploadedFile: null,
   selectedStyle: null,
   quantity: GENERATION_CONFIG.DEFAULT_IMAGES,
-  customPrompt: '',
+  sceneDescription: '',
   generationProgress: {
     status: 'idle',
     progress: 0,
@@ -47,7 +47,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set({ quantity: clampedQuantity });
   },
   
-  setCustomPrompt: (prompt) => set({ customPrompt: prompt }),
+  setSceneDescription: (description) => set({ sceneDescription: description }),
   
   setGenerationProgress: (progress) => set({ generationProgress: progress }),
   

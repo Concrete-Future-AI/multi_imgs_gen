@@ -1,30 +1,23 @@
 'use client'
 
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { useAppStore } from '@/stores/useAppStore'
 import { cn } from '@/lib/utils'
-import { Minus, Plus, Hash, Wand2, Type } from 'lucide-react'
+import { Minus, Plus, Hash, Wand2 } from 'lucide-react'
 
 interface QuantitySelectorProps {
   disabled?: boolean
 }
 
 export function QuantitySelector({ disabled = false }: QuantitySelectorProps) {
-  const { quantity, setQuantity, customPrompt, setCustomPrompt } = useAppStore()
-  const [localPrompt, setLocalPrompt] = useState(customPrompt || '')
+  const { quantity, setQuantity } = useAppStore()
 
   const handleQuantityChange = (newQuantity: number) => {
     if (disabled) return
     const clampedQuantity = Math.max(3, Math.min(8, newQuantity))
     setQuantity(clampedQuantity)
-  }
-
-  const handlePromptChange = (value: string) => {
-    setLocalPrompt(value)
-    setCustomPrompt(value)
   }
 
   const quickQuantities = [3, 4, 5, 6, 8]
@@ -104,76 +97,8 @@ export function QuantitySelector({ disabled = false }: QuantitySelectorProps) {
         <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg">
           <Wand2 className="w-4 h-4 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            建议生成 3-8 张图片，数量越多生成时间越长
+            系统会自动为每张图片生成不同的拍摄角度和距离，建议生成 3-8 张
           </p>
-        </div>
-      </div>
-
-      {/* 自定义提示词 */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Type className="w-4 h-4 text-primary" />
-          <h3 className="font-semibold">自定义提示词</h3>
-          <Badge variant="outline" className="text-xs">
-            可选
-          </Badge>
-        </div>
-
-        <div className="space-y-3">
-          <textarea
-            placeholder="描述您希望的特殊效果、背景、光线等要求..."
-            value={localPrompt}
-            onChange={(e) => handlePromptChange(e.target.value)}
-            className={cn(
-              'w-full min-h-[100px] p-3 text-sm border rounded-lg resize-none transition-colors',
-              'placeholder:text-muted-foreground',
-              'focus:outline-none focus:ring-1 focus:ring-ring',
-              disabled && 'pointer-events-none opacity-50'
-            )}
-            disabled={disabled}
-          />
-
-          {/* 字符计数 */}
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>提示词将与选择的风格结合使用</span>
-            <span>{localPrompt.length}/200</span>
-          </div>
-        </div>
-
-        {/* 提示词建议 */}
-        <div className="space-y-2">
-          <p className="text-xs font-medium text-muted-foreground">建议关键词：</p>
-          <div className="flex flex-wrap gap-2">
-            {[
-              '高清画质',
-              '专业摄影',
-              '柔和光线',
-              '简洁背景',
-              '产品特写',
-              '质感突出'
-            ].map((keyword) => (
-              <Button
-                key={keyword}
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  'h-7 px-2 text-xs border border-dashed border-muted-foreground/30',
-                  'hover:border-primary hover:text-primary',
-                  disabled && 'pointer-events-none opacity-50'
-                )}
-                onClick={() => {
-                  if (!disabled) {
-                    const newPrompt = localPrompt 
-                      ? `${localPrompt}, ${keyword}` 
-                      : keyword
-                    handlePromptChange(newPrompt)
-                  }
-                }}
-              >
-                + {keyword}
-              </Button>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -185,14 +110,9 @@ export function QuantitySelector({ disabled = false }: QuantitySelectorProps) {
             <span>生成数量:</span>
             <Badge variant="secondary">{quantity}张图片</Badge>
           </div>
-          {localPrompt && (
-            <div className="space-y-1">
-              <span>自定义要求:</span>
-              <p className="text-xs bg-background p-2 rounded border">
-                {localPrompt || '无特殊要求'}
-              </p>
-            </div>
-          )}
+          <p className="text-xs mt-2 text-muted-foreground">
+            AI将根据产品特征和选择的风格，自动为每张图片生成最佳的拍摄角度
+          </p>
         </div>
       </div>
     </div>

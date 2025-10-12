@@ -1,15 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { analyzeProduct, generatePrompt, generateImages } from '@/lib/googleAI';
+import { analyzeProduct, generatePrompt, generateImages } from '@/lib/doubaoAI';
 import { STYLE_OPTIONS, GENERATION_CONFIG, FILE_CONFIG } from '@/lib/constants';
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('=== API /api/generate 接收到请求 ===');
+    
     // 解析表单数据
     const formData = await request.formData();
     const productImage = formData.get('productImage') as File;
     const style = formData.get('style') as string;
     const quantity = parseInt(formData.get('quantity') as string);
-    const customPrompt = formData.get('customPrompt') as string;
+    const sceneDescription = formData.get('sceneDescription') as string;
+    
+    console.log('📦 接收到的数据:');
+    console.log('  - productImage:', productImage?.name, productImage?.type, productImage?.size);
+    console.log('  - style:', style);
+    console.log('  - quantity:', quantity);
+    console.log('  - sceneDescription:', sceneDescription || '(无)');
 
     // 验证输入
     if (!productImage) {
@@ -51,12 +59,30 @@ export async function POST(request: NextRequest) {
 
     // 查找风格配置
     const selectedStyle = STYLE_OPTIONS.find(s => s.id === style);
+    console.log('🎨 选择的风格:', selectedStyle);
+    
     if (!selectedStyle) {
+      console.log('❌ 无效的风格选择');
       return NextResponse.json(
         { success: false, error: '无效的风格选择' },
         { status: 400 }
       );
     }
+
+    // 如果选择了场景图风格，验证场景描述是否存在
+    console.log('🔍 检查场景描述要求:');
+    console.log('  - requiresScene:', selectedStyle.requiresScene);
+    console.log('  - sceneDescription:', sceneDescription);
+    
+    if (selectedStyle.requiresScene && !sceneDescription) {
+      console.log('❌ 需要场景描述但未提供');
+      return NextResponse.json(
+        { success: false, error: '请填写场景描述' },
+        { status: 400 }
+      );
+    }
+    
+    console.log('✅ 场景描述验证通过');
 
     // 将图片转换为buffer
     const arrayBuffer = await productImage.arrayBuffer();
@@ -69,12 +95,21 @@ export async function POST(request: NextRequest) {
 
     // 步骤2：生成提示词
     console.log('开始生成提示词...');
-    const prompt = await generatePrompt(analysis, selectedStyle.prompt, customPrompt);
+    const prompt = await generatePrompt(analysis, selectedStyle.prompt, sceneDescription);
     console.log('提示词生成完成:', prompt);
 
     // 步骤3：生成图片（使用原图作为参考）
     console.log('开始生成图片...');
-    const images = await generateImages(prompt, quantity, analysis, buffer, productImage.type);
+    // 判断图片类型
+    const imageType = selectedStyle.requiresScene ? 'scene' : 'closeup';
+    const images = await generateImages(
+      prompt, 
+      quantity, 
+      analysis, 
+      buffer, 
+      productImage.type,
+      imageType
+    );
     console.log(`图片生成完成，共生成 ${images.length} 张`);
 
     // 返回成功响应

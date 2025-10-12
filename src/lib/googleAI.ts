@@ -109,7 +109,7 @@ export async function analyzeProduct(imageBuffer: Buffer, mimeType: string): Pro
 export async function generatePrompt(
   productAnalysis: string,
   style: string,
-  customPrompt?: string
+  sceneDescription?: string
 ): Promise<string> {
   try {
     const promptText = `
@@ -121,8 +121,9 @@ export async function generatePrompt(
         ## 风格要求：
         ${style}
 
-        ${customPrompt ? `## 用户额外要求：
-        ${customPrompt}` : ''}
+        ${sceneDescription ? `## 场景要求：
+        产品需要放置在以下场景中：${sceneDescription}
+        请确保场景描述自然融入提示词，创造真实、自然的环境氛围，让产品与场景完美融合。` : ''}
 
         ## 生成要求：
         请创建一个详细、专业的英文提示词，必须包含以下元素：
@@ -174,7 +175,7 @@ export async function generatePrompt(
  * 智能选择拍摄角度组合
  * 根据图片数量和产品类型选择最佳的拍摄角度组合
  */
-function selectPhotographyAngles(quantity: number, productAnalysis?: string): Array<{angle: typeof PHOTOGRAPHY_ANGLES[number], distance: typeof PHOTOGRAPHY_DISTANCES[number]}> {
+function selectPhotographyAngles(quantity: number): Array<{angle: typeof PHOTOGRAPHY_ANGLES[number], distance: typeof PHOTOGRAPHY_DISTANCES[number]}> {
   // 根据优先级排序的角度
   const sortedAngles = [...PHOTOGRAPHY_ANGLES].sort((a, b) => a.priority - b.priority);
   
@@ -235,7 +236,7 @@ export async function generateImages(
     const images: string[] = [];
     
     // 智能选择拍摄角度组合
-    const angleDistanceCombinations = selectPhotographyAngles(quantity, productAnalysis);
+    const angleDistanceCombinations = selectPhotographyAngles(quantity);
     
     // 为每张图片生成不同角度的提示词
     for (let i = 0; i < quantity; i++) {
@@ -244,17 +245,19 @@ export async function generateImages(
       const distancePrompt = combination.distance.prompt;
       
       // 构建包含角度和距离信息的完整提示词
+      // 根据基础prompt和角度/距离组合，创建变化丰富的图片
       let variantPrompt;
       if (imageBuffer && mimeType) {
-        // 图像引导生成：基于原图进行变换
-        variantPrompt = `Using the provided product image as reference, create a new professional e-commerce photograph with the following specifications: ${anglePrompt}, ${distancePrompt}. ${prompt}. Maintain the product's core characteristics, colors, and design elements while applying the new photography style. Ensure high quality, detailed, and professional lighting.`;
+        // 图像引导生成：基于原图进行多角度变换
+        // 确保产品主体一致性，同时应用不同的拍摄角度和距离
+        variantPrompt = `Using the provided product image as the exact reference, replicate the SAME product maintaining ALL its specific features (exact colors, materials, design details, dimensions, patterns). Create a professional e-commerce photograph with these specifications: ${anglePrompt}, ${distancePrompt}. ${prompt}. CRITICAL: The product must remain identical - same number of components, same design, same characteristics. Only the camera angle, distance, and scene should vary. Ensure product consistency, high quality, detailed, and professional commercial photography.`;
       } else {
         // 纯文本生成：原有逻辑
-        variantPrompt = `${prompt}, ${anglePrompt}, ${distancePrompt}, professional e-commerce photography, high quality, detailed`;
+        variantPrompt = `${prompt}, ${anglePrompt}, ${distancePrompt}, professional e-commerce photography, maintaining product consistency, high quality, detailed`;
       }
       
-      console.log(`图片 ${i + 1} - 角度: ${combination.angle.name}, 距离: ${combination.distance.name}`);
-      console.log(`完整提示词: ${variantPrompt.substring(0, 100)}...`);
+      console.log(`图片 ${i + 1}/${quantity} - 角度: ${combination.angle.name}, 距离: ${combination.distance.name}`);
+      console.log(`提示词前缀: ${variantPrompt.substring(0, 150)}...`);
       
       try {
         // 构建contents数组，支持图像+文本输入

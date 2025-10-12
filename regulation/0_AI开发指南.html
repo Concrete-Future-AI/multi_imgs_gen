@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.23">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ai开发指南</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="0_AI开发指南_files/libs/clipboard/clipboard.min.js"></script>
+<script src="0_AI开发指南_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="0_AI开发指南_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="0_AI开发指南_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="0_AI开发指南_files/libs/quarto-html/popper.min.js"></script>
+<script src="0_AI开发指南_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="0_AI开发指南_files/libs/quarto-html/anchor.min.js"></script>
+<link href="0_AI开发指南_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="0_AI开发指南_files/libs/quarto-html/quarto-syntax-highlighting-1fe81d0376b2c50856e68e651e390326.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="0_AI开发指南_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="0_AI开发指南_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="0_AI开发指南_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="ai-开发指南-ai-development-guide" class="level1">
+<h1>AI 开发指南 (AI Development Guide)</h1>
+<blockquote class="blockquote">
+<p>🤖 <strong>专为AI开发设计</strong>: 本文档专门为AI助手在项目开发和设计时提供技术规范和代码模板</p>
+<p>🎯 <strong>核心原则</strong>: 严格遵循技术栈规范，确保代码质量和架构一致性</p>
+</blockquote>
+<section id="快速导航" class="level2">
+<h2 class="anchored" data-anchor-id="快速导航">📋 快速导航</h2>
+<ul>
+<li><a href="#1-核心技术栈规范">1. 核心技术栈规范</a></li>
+<li><a href="#2-安全架构设计原则">2. 安全架构设计原则</a></li>
+<li><a href="#3-项目结构规范">3. 项目结构规范</a></li>
+<li><a href="#4-核心代码实现模板">4. 核心代码实现模板</a></li>
+<li><a href="#5-开发策略与最佳实践">5. 开发策略与最佳实践</a></li>
+<li><a href="#6-ai协助请求格式">6. AI协助请求格式</a></li>
+</ul>
+<hr>
+</section>
+<section id="核心技术栈规范" class="level2">
+<h2 class="anchored" data-anchor-id="核心技术栈规范">1. 核心技术栈规范</h2>
+<blockquote class="blockquote">
+<p>⚠️ <strong>严格遵守</strong>: 所有代码生成必须严格遵循以下技术栈规范</p>
+<p>🔧 <strong>可选组件</strong>: 标记为”可选”的组件可根据项目需求灵活选择</p>
+</blockquote>
+<section id="必需技术栈" class="level3">
+<h3 class="anchored" data-anchor-id="必需技术栈">1.1 必需技术栈</h3>
+<ul>
+<li><strong>应用框架</strong>: <strong>Next.js 15+</strong>
+<ul>
+<li>严格使用 <strong>App Router</strong> (<code>/src/app</code> 目录结构)</li>
+<li>默认使用 <strong>React Server Components (RSC)</strong></li>
+<li>仅在需要交互性时使用 <code>'use client'</code></li>
+<li>优先使用 <strong>Server Actions</strong> 处理表单和数据变更</li>
+</ul></li>
+<li><strong>认证</strong>: <strong>NextAuth.js</strong>
+<ul>
+<li>与中间件集成，提供用户身份信息</li>
+</ul></li>
+<li><strong>UI &amp; 样式</strong>:
+<ul>
+<li><strong>组件库</strong>: <strong>shadcn/ui</strong> (安装到 <code>/src/components/ui</code>)</li>
+<li><strong>CSS框架</strong>: <strong>Tailwind CSS</strong> (原子化CSS类)</li>
+<li>避免使用原生CSS文件，除全局样式 (<code>/src/app/globals.css</code>)</li>
+</ul></li>
+<li><strong>AI 核心</strong>: <strong>Vercel AI SDK</strong>
+<ul>
+<li>使用 React Hooks (<code>useChat</code>, <code>useCompletion</code>) 实现流式响应</li>
+<li>在 Server Actions/Route Handlers 中调用核心函数</li>
+</ul></li>
+<li><strong>数据库</strong>: <strong>PostgreSQL + pgvector</strong>
+<ul>
+<li>必须启用 <code>pgvector</code> 扩展支持向量搜索</li>
+<li>启用行级安全 (RLS) 确保数据访问权限</li>
+</ul></li>
+<li><strong>ORM</strong>: <strong>Prisma</strong>
+<ul>
+<li>唯一数据源: <code>/prisma/schema.prisma</code></li>
+<li>工作流: 修改schema → <code>npx prisma generate</code> → <code>npx prisma migrate dev</code></li>
+<li>单例客户端: <code>/src/lib/prisma.ts</code></li>
+</ul></li>
+<li><strong>静态文件</strong>: <strong>阿里云 OSS (S3兼容)</strong>
+<ul>
+<li>使用预签名URL实现安全上传</li>
+<li>数据库仅存储文件key/URL</li>
+</ul></li>
+</ul>
+</section>
+<section id="可选技术栈" class="level3">
+<h3 class="anchored" data-anchor-id="可选技术栈">1.2 可选技术栈</h3>
+<ul>
+<li><strong>缓存</strong>: <strong>Redis</strong> 🔧 可选
+<ul>
+<li>高性能缓存层，预留”即插即用”逻辑</li>
+<li>项目初期可不配置</li>
+</ul></li>
+</ul>
+</section>
+<section id="开发规范" class="level3">
+<h3 class="anchored" data-anchor-id="开发规范">1.3 开发规范</h3>
+<ul>
+<li><strong>语言</strong>: <strong>TypeScript</strong> (启用 <code>strict</code> 模式)</li>
+<li><strong>🚫 严禁使用 <code>any</code> 类型</strong></li>
+<li>遵循 ESLint 和 Prettier 配置</li>
+</ul>
+</section>
+</section>
+<section id="安全架构设计原则" class="level2">
+<h2 class="anchored" data-anchor-id="安全架构设计原则">2. 安全架构设计原则</h2>
+<section id="核心目标" class="level3">
+<h3 class="anchored" data-anchor-id="核心目标">2.1 核心目标</h3>
+<ul>
+<li><strong>极致安全</strong>: 数据访问权限在数据库层面强制执行 (RLS)</li>
+<li><strong>关注点分离</strong>: API路由 → 服务层 → 数据层</li>
+<li><strong>性能就绪</strong>: 为缓存预留位置，无需重构即可优化</li>
+<li><strong>开发体验</strong>: 业务代码简洁直观</li>
+</ul>
+</section>
+<section id="请求生命周期" class="level3">
+<h3 class="anchored" data-anchor-id="请求生命周期">2.2 请求生命周期</h3>
+<pre><code>1. Next.js Middleware → 解析用户身份，注入 AsyncLocalStorage
+2. API路由/Server Component → 调用服务层函数
+3. 服务层 → 封装业务逻辑，决定数据来源 (数据库/缓存)
+4. Prisma Client Extension → 设置 PostgreSQL 会话变量
+5. PostgreSQL RLS → 根据策略过滤数据
+6. 返回安全数据</code></pre>
+</section>
+</section>
+<section id="项目结构规范" class="level2">
+<h2 class="anchored" data-anchor-id="项目结构规范">3. 项目结构规范</h2>
+<pre><code>/
+├── prisma/
+│   └── schema.prisma      # 数据库模型定义
+├── public/                # 静态资源
+└── src/
+    ├── app/                 # Next.js 路由和页面
+    │   ├── api/             # API Route Handlers
+    │   └── (routes)/...     # 页面组件
+    ├── components/
+    │   ├── ui/              # shadcn/ui 官方组件
+    │   └── shared/          # 项目自定义组件
+    ├── services/            # 业务逻辑服务层
+    │   └── *.ts             # 各种业务服务
+    └── lib/
+        ├── prisma.ts        # Prisma Client 单例 (带安全扩展)
+        ├── context.ts       # 请求上下文管理
+        ├── redis.ts         # Redis 客户端 (预留)
+        ├── ai.ts            # AI SDK 配置
+        ├── oss.ts           # OSS/S3 客户端
+        └── utils.ts         # 通用工具函数</code></pre>
+</section>
+<section id="核心代码实现模板" class="level2">
+<h2 class="anchored" data-anchor-id="核心代码实现模板">4. 核心代码实现模板</h2>
+<section id="postgresql-安全规则" class="level3">
+<h3 class="anchored" data-anchor-id="postgresql-安全规则">4.1 PostgreSQL 安全规则</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 启用 RLS</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">ALTER</span> <span class="kw">TABLE</span> <span class="ot">"public"</span>.<span class="ot">"Post"</span> <span class="kw">ENABLE</span> <span class="kw">ROW</span> <span class="kw">LEVEL</span> SECURITY;</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- 创建安全策略</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> POLICY <span class="ot">"user_can_manage_own_posts"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">ON</span> <span class="ot">"public"</span>.<span class="ot">"Post"</span> <span class="cf">FOR</span> <span class="kw">ALL</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">USING</span> (<span class="ot">"authorId"</span>:<span class="ch">:text</span> <span class="op">=</span> current_setting(<span class="st">'app.current_user_id'</span>, <span class="kw">true</span>))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">WITH</span> <span class="kw">CHECK</span> (<span class="ot">"authorId"</span>:<span class="ch">:text</span> <span class="op">=</span> current_setting(<span class="st">'app.current_user_id'</span>, <span class="kw">true</span>));</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="请求上下文管理-libcontext.ts" class="level3">
+<h3 class="anchored" data-anchor-id="请求上下文管理-libcontext.ts">4.2 请求上下文管理 (<code>lib/context.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { AsyncLocalStorage } <span class="im">from</span> <span class="st">'async_hooks'</span><span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> RequestContext {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  userId<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> requestContextStore <span class="op">=</span> <span class="kw">new</span> <span class="fu">AsyncLocalStorage</span><span class="op">&lt;</span>RequestContext<span class="op">&gt;</span>()<span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getRequestContext</span>()<span class="op">:</span> RequestContext {</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> context <span class="op">=</span> requestContextStore<span class="op">.</span><span class="fu">getStore</span>()<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>context) {</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">Error</span>(<span class="st">'请求上下文未找到。请确保请求已被中间件处理。'</span>)<span class="op">;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> context<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="增强的-prisma-client-libprisma.ts" class="level3">
+<h3 class="anchored" data-anchor-id="增强的-prisma-client-libprisma.ts">4.3 增强的 Prisma Client (<code>lib/prisma.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { PrismaClient } <span class="im">from</span> <span class="st">'@prisma/client'</span><span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getRequestContext } <span class="im">from</span> <span class="st">'./context'</span><span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> prismaClientSingleton <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">new</span> <span class="fu">PrismaClient</span>()<span class="op">.</span><span class="fu">$extends</span>({</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    query<span class="op">:</span> {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>      $allModels<span class="op">:</span> {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">async</span> <span class="fu">$allOperations</span>({ args<span class="op">,</span> query }) {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>          <span class="cf">try</span> {</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="kw">const</span> { userId } <span class="op">=</span> <span class="fu">getRequestContext</span>()<span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="kw">const</span> [_<span class="op">,</span> result] <span class="op">=</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="fu">$transaction</span>([</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>              prisma<span class="op">.</span><span class="fu">$executeRawUnsafe</span>(<span class="vs">`SET app.current_user_id = '</span><span class="sc">${</span>userId<span class="sc">}</span><span class="vs">'`</span>)<span class="op">,</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>              <span class="fu">query</span>(args)<span class="op">,</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            ])<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>          } <span class="cf">catch</span> (error) {</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 无上下文时直接执行查询，让RLS策略处理</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="fu">query</span>(args)<span class="op">;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>          }</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      }<span class="op">,</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="kw">declare</span> <span class="bu">global</span> {</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> prisma<span class="op">:</span> <span class="dt">undefined</span> <span class="op">|</span> <span class="bu">ReturnType</span><span class="op">&lt;</span><span class="kw">typeof</span> prismaClientSingleton<span class="op">&gt;;</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> prisma <span class="op">=</span> globalThis<span class="op">.</span><span class="at">prisma</span> <span class="op">??</span> <span class="fu">prismaClientSingleton</span>()<span class="op">;</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">NODE_ENV</span> <span class="op">!==</span> <span class="st">'production'</span>) {</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    globalThis<span class="op">.</span><span class="at">prisma</span> <span class="op">=</span> prisma<span class="op">;</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="中间件配置-middleware.ts" class="level3">
+<h3 class="anchored" data-anchor-id="中间件配置-middleware.ts">4.4 中间件配置 (<code>middleware.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { NextResponse } <span class="im">from</span> <span class="st">'next/server'</span><span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="im">type</span> { NextRequest } <span class="im">from</span> <span class="st">'next/server'</span><span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getToken } <span class="im">from</span> <span class="st">'next-auth/jwt'</span><span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { requestContextStore } <span class="im">from</span> <span class="st">'@/lib/context'</span><span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">middleware</span>(request<span class="op">:</span> NextRequest) {</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> token <span class="op">=</span> <span class="cf">await</span> <span class="fu">getToken</span>({ req<span class="op">:</span> request })<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> userId <span class="op">=</span> token<span class="op">?.</span><span class="at">sub</span><span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (userId) {</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="cf">await</span> requestContextStore<span class="op">.</span><span class="fu">run</span>({ userId }<span class="op">,</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">next</span>()<span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    })<span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">next</span>()<span class="op">;</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> config <span class="op">=</span> {</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  matcher<span class="op">:</span> [<span class="st">'/api/:path*'</span><span class="op">,</span> <span class="st">'/dashboard/:path*'</span>]<span class="op">,</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="redis-客户端预留-libredis.ts" class="level3">
+<h3 class="anchored" data-anchor-id="redis-客户端预留-libredis.ts">4.5 Redis 客户端预留 (<code>lib/redis.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> Redis <span class="im">from</span> <span class="st">'ioredis'</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> redisClientSingleton <span class="op">=</span> () <span class="kw">=&gt;</span> {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_URL</span>) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">'正在初始化 Redis 客户端...'</span>)<span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">new</span> <span class="fu">Redis</span>(<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">REDIS_URL</span>)<span class="op">;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">warn</span>(<span class="st">'未找到 REDIS_URL，Redis 客户端未初始化。'</span>)<span class="op">;</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="kw">declare</span> <span class="bu">global</span> {</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">var</span> redis<span class="op">:</span> <span class="dt">undefined</span> <span class="op">|</span> Redis <span class="op">|</span> <span class="dt">null</span><span class="op">;</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">const</span> redis <span class="op">=</span> globalThis<span class="op">.</span><span class="at">redis</span> <span class="op">??</span> <span class="fu">redisClientSingleton</span>()<span class="op">;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">NODE_ENV</span> <span class="op">!==</span> <span class="st">'production'</span>) {</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  globalThis<span class="op">.</span><span class="at">redis</span> <span class="op">=</span> redis<span class="op">;</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="服务层模板-servicespostservice.ts" class="level3">
+<h3 class="anchored" data-anchor-id="服务层模板-servicespostservice.ts">4.6 服务层模板 (<code>services/postService.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { prisma } <span class="im">from</span> <span class="st">'@/lib/prisma'</span><span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { redis } <span class="im">from</span> <span class="st">'@/lib/redis'</span><span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getRequestContext } <span class="im">from</span> <span class="st">'@/lib/context'</span><span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="im">type</span> { Post } <span class="im">from</span> <span class="st">'@prisma/client'</span><span class="op">;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"> * 获取当前用户的帖子列表</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">getPostsForCurrentUser</span>()<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>Post[]<span class="op">&gt;</span> {</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { userId } <span class="op">=</span> <span class="fu">getRequestContext</span>()<span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> cacheKey <span class="op">=</span> <span class="vs">`user:</span><span class="sc">${</span>userId<span class="sc">}</span><span class="vs">:posts`</span><span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- 缓存逻辑预留位置 ---</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (redis) {</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   try {</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     const cachedData = await redis.get(cacheKey);</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     if (cachedData) return JSON.parse(cachedData);</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   } catch (e) { console.error('Redis读取错误:', e); }</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> posts <span class="op">=</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="at">post</span><span class="op">.</span><span class="fu">findMany</span>({</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    orderBy<span class="op">:</span> { createdAt<span class="op">:</span> <span class="st">'desc'</span> }<span class="op">,</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- 缓存写入预留位置 ---</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (redis) {</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   try {</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     await redis.set(cacheKey, JSON.stringify(posts), 'EX', 120);</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   } catch (e) { console.error('Redis写入错误:', e); }</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> posts<span class="op">;</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="co"> * 为当前用户创建新帖子</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">createPostForCurrentUser</span>(data<span class="op">:</span> { title<span class="op">:</span> <span class="dt">string</span><span class="op">;</span> content<span class="op">?:</span> <span class="dt">string</span> })<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>Post<span class="op">&gt;</span> {</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> { userId } <span class="op">=</span> <span class="fu">getRequestContext</span>()<span class="op">;</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> newPost <span class="op">=</span> <span class="cf">await</span> prisma<span class="op">.</span><span class="at">post</span><span class="op">.</span><span class="fu">create</span>({</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    data<span class="op">:</span> {</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>      <span class="op">...</span>data<span class="op">,</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>      authorId<span class="op">:</span> userId<span class="op">,</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  <span class="co">// --- 缓存失效逻辑预留位置 ---</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> cacheKey <span class="op">=</span> <span class="vs">`user:</span><span class="sc">${</span>userId<span class="sc">}</span><span class="vs">:posts`</span><span class="op">;</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>  <span class="co">// if (redis) {</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   try {</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>  <span class="co">//     await redis.del(cacheKey);</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   } catch (e) { console.error('Redis缓存失效错误:', e); }</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="co">// }</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> newPost<span class="op">;</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="api-路由模板-appapimy-postsroute.ts" class="level3">
+<h3 class="anchored" data-anchor-id="api-路由模板-appapimy-postsroute.ts">4.7 API 路由模板 (<code>app/api/my-posts/route.ts</code>)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode typescript code-with-copy"><code class="sourceCode typescript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { getPostsForCurrentUser<span class="op">,</span> createPostForCurrentUser } <span class="im">from</span> <span class="st">'@/services/postService'</span><span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { NextResponse } <span class="im">from</span> <span class="st">'next/server'</span><span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 获取帖子列表</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">GET</span>() {</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> posts <span class="op">=</span> <span class="cf">await</span> <span class="fu">getPostsForCurrentUser</span>()<span class="op">;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>(posts)<span class="op">;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(error)<span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>({ message<span class="op">:</span> <span class="st">'获取帖子失败'</span> }<span class="op">,</span> { status<span class="op">:</span> <span class="dv">500</span> })<span class="op">;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">// 创建新帖子</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">POST</span>(request<span class="op">:</span> Request) {</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> body <span class="op">=</span> <span class="cf">await</span> request<span class="op">.</span><span class="fu">json</span>()<span class="op">;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>body<span class="op">.</span><span class="at">title</span>) {</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>({ message<span class="op">:</span> <span class="st">'标题不能为空'</span> }<span class="op">,</span> { status<span class="op">:</span> <span class="dv">400</span> })<span class="op">;</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> newPost <span class="op">=</span> <span class="cf">await</span> <span class="fu">createPostForCurrentUser</span>({ title<span class="op">:</span> body<span class="op">.</span><span class="at">title</span><span class="op">,</span> content<span class="op">:</span> body<span class="op">.</span><span class="at">content</span> })<span class="op">;</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>(newPost<span class="op">,</span> { status<span class="op">:</span> <span class="dv">201</span> })<span class="op">;</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (error) {</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(error)<span class="op">;</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> NextResponse<span class="op">.</span><span class="fu">json</span>({ message<span class="op">:</span> <span class="st">'创建帖子失败'</span> }<span class="op">,</span> { status<span class="op">:</span> <span class="dv">500</span> })<span class="op">;</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="开发策略与最佳实践" class="level2">
+<h2 class="anchored" data-anchor-id="开发策略与最佳实践">5. 开发策略与最佳实践</h2>
+<section id="架构优势" class="level3">
+<h3 class="anchored" data-anchor-id="架构优势">5.1 架构优势</h3>
+<ul>
+<li><strong>清晰边界</strong>: 每个模块职责单一</li>
+<li><strong>高度可维护</strong>: 业务逻辑集中在服务层</li>
+<li><strong>即插即用性能</strong>: 缓存逻辑预留，无需重构</li>
+<li><strong>数据安全</strong>: PostgreSQL RLS 在数据库层强制执行安全策略</li>
+</ul>
+</section>
+<section id="开发原则" class="level3">
+<h3 class="anchored" data-anchor-id="开发原则">5.2 开发原则</h3>
+<ol type="1">
+<li><strong>API路由</strong>: 只处理HTTP层事务，不含业务逻辑</li>
+<li><strong>服务层</strong>: 封装所有业务逻辑和数据访问策略</li>
+<li><strong>数据层</strong>: 负责数据持久化和安全过滤</li>
+<li><strong>组件</strong>: 优先使用 Server Components，必要时才用 Client Components</li>
+</ol>
+</section>
+<section id="性能优化策略" class="level3">
+<h3 class="anchored" data-anchor-id="性能优化策略">5.3 性能优化策略</h3>
+<ul>
+<li>服务层预留缓存逻辑位置</li>
+<li>取消注释即可启用 Redis 缓存</li>
+<li>无需修改其他代码，低风险优化</li>
+</ul>
+</section>
+</section>
+<section id="ai协助请求格式" class="level2">
+<h2 class="anchored" data-anchor-id="ai协助请求格式">6. AI协助请求格式</h2>
+<p>当请求AI协助时，请提供以下信息：</p>
+<ul>
+<li><strong>目标 (Goal)</strong>: 简要说明想实现的功能</li>
+<li><strong>上下文 (Context)</strong>: 说明功能所在的具体文件或组件路径</li>
+<li><strong>数据模型 (Data Models)</strong>: 指出需要参考的 <code>prisma.schema</code> 中的模型</li>
+<li><strong>具体请求 (Request)</strong>: 详细说明需要生成的代码片段、函数或组件</li>
+</ul>
+<section id="示例请求格式" class="level3">
+<h3 class="anchored" data-anchor-id="示例请求格式">示例请求格式</h3>
+<pre><code>目标: 实现用户帖子的CRUD操作
+上下文: /src/app/api/posts 和 /src/services/postService.ts
+数据模型: Post, User (来自 prisma.schema)
+具体请求: 生成完整的帖子服务层函数和对应的API路由</code></pre>
+<hr>
+<blockquote class="blockquote">
+<p>📝 <strong>重要提醒</strong>: - 严格遵循技术栈规范 - 禁止使用 <code>any</code> 类型 - 优先使用提供的代码模板 - 确保所有数据访问通过服务层 - 利用 PostgreSQL RLS 确保数据安全</p>
+</blockquote>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

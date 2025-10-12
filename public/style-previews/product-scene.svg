@@ -1,0 +1,40 @@
+<svg width="300" height="300" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- 渐变背景 -->
+  <defs>
+    <linearGradient id="sceneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fde68a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.3" />
+    </linearGradient>
+    <filter id="sceneShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="6" stdDeviation="10" flood-color="#000000" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="300" height="300" fill="url(#sceneGradient)"/>
+  
+  <!-- 地面 -->
+  <rect x="0" y="200" width="300" height="100" fill="#8b5cf6" opacity="0.1"/>
+  
+  <!-- 背景装饰元素 -->
+  <circle cx="50" cy="80" r="25" fill="#ffffff" opacity="0.3"/>
+  <circle cx="250" cy="60" r="20" fill="#ffffff" opacity="0.2"/>
+  
+  <!-- 桌面/台面 -->
+  <ellipse cx="150" cy="220" rx="120" ry="20" fill="#d1d5db" opacity="0.4"/>
+  
+  <!-- 示例产品 -->
+  <rect x="120" y="160" width="60" height="60" rx="6" fill="#ffffff" filter="url(#sceneShadow)"/>
+  
+  <!-- 装饰植物 -->
+  <ellipse cx="80" cy="200" rx="15" ry="25" fill="#10b981" opacity="0.6"/>
+  <ellipse cx="220" cy="190" rx="12" ry="20" fill="#10b981" opacity="0.5"/>
+  
+  <!-- 光线效果 -->
+  <path d="M 50 50 L 100 100 L 200 80 L 250 30" stroke="#fbbf24" stroke-width="3" fill="none" opacity="0.3"/>
+  
+  <!-- 标题文字 -->
+  <text x="150" y="50" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">产品场景</text>
+  <text x="150" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">Lifestyle Scene</text>
+</svg>
