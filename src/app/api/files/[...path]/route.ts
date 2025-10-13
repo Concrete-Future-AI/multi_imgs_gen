@@ -44,7 +44,7 @@ export async function GET(
     // 获取查询参数
     const searchParams = request.nextUrl.searchParams;
     const download = searchParams.get('download') === 'true';
-    const filename = searchParams.get('filename') || filePath.split('/').pop();
+    const filename = searchParams.get('filename') || filePath.split('/').pop() || 'download';
 
     // 设置响应头
     const headers = new Headers({
@@ -54,10 +54,12 @@ export async function GET(
     });
 
     // 如果是下载模式，设置下载头
+    // 对中文文件名进行URL编码，遵循RFC 5987标准
+    const encodedFilename = encodeURIComponent(filename);
     if (download) {
-      headers.set('Content-Disposition', `attachment; filename="${filename}"`);
+      headers.set('Content-Disposition', `attachment; filename*=UTF-8''${encodedFilename}`);
     } else {
-      headers.set('Content-Disposition', `inline; filename="${filename}"`);
+      headers.set('Content-Disposition', `inline; filename*=UTF-8''${encodedFilename}`);
     }
 
     return new NextResponse(buffer as unknown as BodyInit, {

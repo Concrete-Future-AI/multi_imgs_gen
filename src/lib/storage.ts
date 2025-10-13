@@ -1,6 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { generateUploadFileName } from './fileNaming';
 
 // 存储配置接口
 export interface StorageConfig {
@@ -62,17 +63,8 @@ export class LocalStorageService implements IStorageService {
 
     const { folder = 'generated', filename, preserveOriginalName = false } = options;
     
-    // 生成文件名
-    const timestamp = Date.now();
-    const uuid = uuidv4().split('-')[0];
-    const extension = this.getExtensionFromBuffer(buffer);
-    
-    let finalFilename: string;
-    if (filename) {
-      finalFilename = preserveOriginalName ? filename : `${timestamp}_${uuid}_${filename}`;
-    } else {
-      finalFilename = `generated_${timestamp}_${uuid}${extension}`;
-    }
+    // 使用新的文件命名服务生成唯一文件名
+    const finalFilename = generateUploadFileName(filename, preserveOriginalName, buffer);
 
     // 构建文件路径
     const relativePath = path.join(folder, finalFilename);
@@ -86,6 +78,9 @@ export class LocalStorageService implements IStorageService {
     
     // 获取文件信息
     const stats = await fs.stat(fullPath);
+    
+    // 从文件名中提取扩展名
+    const extension = path.extname(finalFilename).toLowerCase();
     
     const fileInfo = {
       key: relativePath.replace(/\\/g, '/'), // 统一使用正斜杠

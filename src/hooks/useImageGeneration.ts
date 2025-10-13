@@ -60,17 +60,61 @@ export function useImageGeneration() {
         totalSteps: 4,
       });
 
+      // 创建带超时的请求
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 720000); // 12分钟超时
+
       // 发送生成请求
       const response = await fetch(API_ENDPOINTS.GENERATE, {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
 
+      // 检查响应状态
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        let errorMessage = `HTTP错误: ${response.status}`;
+        try {
+          const errorText = await response.text();
+          if (errorText) {
+            const errorData = JSON.parse(errorText);
+            errorMessage = errorData.error || errorMessage;
+          }
+        } catch (parseError) {
+          console.warn('无法解析错误响应:', parseError);
+        }
+        throw new Error(errorMessage);
       }
 
-      const result: ImageGenerationResponse = await response.json();
+      // 检查响应内容类型
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const responseText = await response.text();
+        console.error('非JSON响应:', responseText);
+        throw new Error('服务器返回了无效的响应格式');
+      }
+
+      // 安全地解析JSON响应
+      let result: ImageGenerationResponse;
+      try {
+        const responseText = await response.text();
+        if (!responseText.trim()) {
+          throw new Error('服务器返回了空响应');
+        }
+        result = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('JSON解析错误:', parseError);
+        throw new Error('服务器响应格式错误，请稍后重试');
+      }
+
+      // 验证响应结构
+      if (typeof result !== 'object' || result === null) {
+        throw new Error('服务器返回了无效的数据格式');
+      }
 
       if (!result.success) {
         throw new Error(result.error || ERROR_MESSAGES.GENERATION_FAILED);
@@ -125,7 +169,33 @@ export function useImageGeneration() {
 
     } catch (error) {
       console.error('Image generation error:', error);
-      const errorMessage = handleApiError(error as { response?: { data?: { message?: string } }; message?: string });
+      
+      // 更详细的错误处理
+      let errorMessage = '生成失败，请稍后重试';
+      
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = '请求超时，请检查网络连接后重试';
+        } else {
+          errorMessage = error.message;
+        }
+      } else if (typeof error === 'string') {
+        errorMessage = error;
+      } else {
+        // 处理其他类型的错误
+        const apiError = error as { response?: { data?: { message?: string } }; message?: string };
+        errorMessage = handleApiError(apiError);
+      }
+      
+      // 记录详细错误信息用于调试
+      console.error('详细错误信息:', {
+        error,
+        errorMessage,
+        uploadedFile: uploadedFile?.file?.name,
+        selectedStyle: selectedStyle?.id,
+        quantity,
+        sceneDescription
+      });
       
       setGenerationProgress({
         status: 'error',

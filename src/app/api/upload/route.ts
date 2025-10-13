@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FILE_CONFIG } from '@/lib/constants';
+import { generateTempFileName } from '@/lib/fileNaming';
 
 export async function POST(request: NextRequest) {
   try {
@@ -65,7 +66,7 @@ export async function POST(request: NextRequest) {
       success: true,
       file: fileInfo,
       preview: dataUrl,
-      uploadId: `upload_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      uploadId: generateTempFileName('upload'),
       message: '文件上传成功'
     });
 

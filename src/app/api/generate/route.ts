@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { analyzeProduct, generatePrompt, generateImages } from '@/lib/doubaoAI';
 import { STYLE_OPTIONS, GENERATION_CONFIG, FILE_CONFIG } from '@/lib/constants';
+import { generateTempFileName } from '@/lib/fileNaming';
 
 // 配置API路由
 export const maxDuration = 300; // 5分钟超时
@@ -125,7 +126,7 @@ export async function POST(request: NextRequest) {
       images,
       analysis,
       prompt,
-      requestId: `req_${Date.now()}`
+      requestId: generateTempFileName('req', 'id')
     };
     
     console.log('返回给前端的数据:', JSON.stringify(response, null, 2));

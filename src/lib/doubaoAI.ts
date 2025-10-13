@@ -10,6 +10,7 @@
 import axios from 'axios';
 import { storageService } from './storage';
 import { GENERATION_CONFIG } from './constants';
+import { generateAIImageFileName } from './fileNaming';
 
 const DOUBAO_API_KEY = process.env.DOUBAO_API_KEY;
 const DOUBAO_BASE_URL = 'https://ark.cn-beijing.volces.com/api/v3';
@@ -57,6 +58,8 @@ export async function analyzeProduct(imageBuffer: Buffer, mimeType: string): Pro
       max_tokens: 500
     };
     
+    console.log('🌐 发送请求到:', `${DOUBAO_BASE_URL}/chat/completions`);
+    
     const response = await axios.post(
       `${DOUBAO_BASE_URL}/chat/completions`,
       requestBody,
@@ -65,7 +68,13 @@ export async function analyzeProduct(imageBuffer: Buffer, mimeType: string): Pro
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${DOUBAO_API_KEY}`
         },
-        timeout: GENERATION_CONFIG.ANALYZE_TIMEOUT
+        timeout: GENERATION_CONFIG.ANALYZE_TIMEOUT,
+        // 禁用代理，直接连接
+        proxy: false,
+        // 添加更详细的错误处理
+        validateStatus: function (status) {
+          return status < 500; // 只有5xx错误才会被reject
+        }
       }
     );
     
@@ -214,7 +223,12 @@ ${productAnalysis}
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${DOUBAO_API_KEY}`
         },
-        timeout: GENERATION_CONFIG.PROMPT_TIMEOUT
+        timeout: GENERATION_CONFIG.PROMPT_TIMEOUT,
+        // 禁用代理，直接连接
+        proxy: false,
+        validateStatus: function (status) {
+          return status < 500;
+        }
       }
     );
     
@@ -415,14 +429,19 @@ ${viewpoint.description}
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${DOUBAO_API_KEY}`
             },
-            timeout: GENERATION_CONFIG.IMAGE_TIMEOUT
+            timeout: GENERATION_CONFIG.IMAGE_TIMEOUT,
+            // 禁用代理，直接连接
+            proxy: false,
+            validateStatus: function (status) {
+              return status < 500;
+            }
           }
         );
         
         // 下载并保存图片
         if (response.data.data && response.data.data.length > 0) {
           const imageUrl = response.data.data[0].url;
-          const fileName = `generated_${Date.now()}_${i}.png`;
+          const fileName = generateAIImageFileName('doubao', undefined, i, viewpoint.name);
           const localPath = await saveImageFromUrl(imageUrl, fileName);
           images.push(localPath);
           console.log(`   ✅ ${viewpoint.name} 生成成功`);
@@ -475,7 +494,9 @@ async function saveImageFromUrl(imageUrl: string, fileName: string): Promise<str
     // 下载图片
     const response = await axios.get(imageUrl, {
       responseType: 'arraybuffer',
-      timeout: 30000
+      timeout: 30000,
+      // 禁用代理，直接连接
+      proxy: false
     });
     
     const imageBuffer = Buffer.from(response.data);

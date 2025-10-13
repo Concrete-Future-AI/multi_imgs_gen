@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { PHOTOGRAPHY_ANGLES, PHOTOGRAPHY_DISTANCES } from "./constants";
+import { generateAIImageFileName } from './fileNaming';
 
 // 初始化Google Generative AI客户端
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY! });
@@ -294,7 +295,8 @@ export async function generateImages(
             if (part.inlineData && part.inlineData.mimeType?.startsWith('image/') && part.inlineData.data) {
               // 保存图片到本地
               const imageData = part.inlineData.data;
-              const fileName = `generated_${Date.now()}_${i}.png`;
+              const styleInfo = `${combination.angle.name}_${combination.distance.name}`;
+              const fileName = generateAIImageFileName('google', undefined, i, styleInfo);
               const filePath = await saveImageToLocal(imageData, fileName);
               images.push(filePath);
               break; // 只取第一张图片

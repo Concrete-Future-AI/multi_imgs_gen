@@ -10,6 +10,7 @@ import { StyleSelector } from '@/components/features/StyleSelector'
 import { QuantitySelector } from '@/components/features/QuantitySelector'
 import { AgentWorkflowProgress } from '@/components/features/AgentWorkflowProgress'
 import { ResultsDisplay } from '@/components/features/ResultsDisplay'
+import { ErrorBoundary } from '@/components/shared/ErrorBoundary'
 import { useAppStore } from '@/stores/useAppStore'
 import type { GenerateApiResponse } from '@/types'
 import { Sparkles, Wand2, Image as ImageIcon, Loader2, Check } from 'lucide-react'
@@ -326,7 +327,8 @@ export default function Home() {
   }, [uploadedFile, selectedStyle, isGenerating, sceneDescription])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
       {/* 滚动时出现的顶部导航栏 */}
       <div
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -574,5 +576,9 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </ErrorBoundary>
   )
 }
+
+
+

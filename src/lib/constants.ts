@@ -12,10 +12,10 @@ export const GENERATION_CONFIG = {
   MAX_IMAGES: 8,
   MIN_IMAGES: 1,
   DEFAULT_IMAGES: 3,
-  TIMEOUT: 1800000, // 600秒 (10分钟) - 总超时时间
-  ANALYZE_TIMEOUT: 1800000, // 产品分析超时: 120秒 (2分钟)
-  PROMPT_TIMEOUT: 1800000, // 提示词生成超时: 120秒 (2分钟)
-  IMAGE_TIMEOUT: 1800000, // 单张图片生成超时: 280秒 (3分钟)
+  TIMEOUT: 1800000, // 1800秒 (30分钟) - 总超时时间
+  ANALYZE_TIMEOUT: 1800000, // 产品分析超时: 1800秒 (30分钟)
+  PROMPT_TIMEOUT: 1800000, // 提示词生成超时: 1800秒 (30分钟)
+  IMAGE_TIMEOUT: 1800000, // 单张图片生成超时: 1800秒 (30分钟)
 } as const;
 
 // 摄影角度和拍摄方式配置
