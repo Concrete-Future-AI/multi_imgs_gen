@@ -222,9 +222,11 @@ export default function Home() {
         
         console.log(`✅ 成功设置 ${newImages.length} 张图片到展示区`)
         
-        // 验证状态是否更新
+        // 验证状态是否更新 - 使用store直接获取最新状态
         setTimeout(() => {
-          console.log('🔍 验证状态更新 - 当前generatedImages数量:', generatedImages.length);
+          const currentImages = useAppStore.getState().generatedImages;
+          console.log('🔍 验证状态更新 - 当前generatedImages数量:', currentImages.length);
+          console.log('🔍 验证状态更新 - 图片URLs:', currentImages.map(img => img.url));
         }, 500);
       } else {
         console.warn('⚠️ 未收到图片数据或images数组为空')

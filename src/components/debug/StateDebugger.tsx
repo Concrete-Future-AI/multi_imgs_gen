@@ -16,7 +16,7 @@ export function StateDebugger() {
   const addTestImage = () => {
     const testImage = {
       id: `test-${Date.now()}`,
-      url: '/generated/generated_1760337589763_0.png', // 使用最新生成的图片
+      url: '/generated/generated_1760357833257_0.png', // 使用实际存在的图片
       prompt: '正面特写 - 测试',
       style: '产品特写',
       timestamp: Date.now(),
@@ -29,22 +29,22 @@ export function StateDebugger() {
     const testImages = [
       {
         id: `test-${Date.now()}-1`,
-        url: '/generated/generated_1760337589763_0.png',
-        prompt: '正面特写 - 户外背包正面展示',
+        url: '/generated/generated_1760357833257_0.png',
+        prompt: '正面特写 - 产品正面展示',
         style: '产品特写',
         timestamp: Date.now(),
       },
       {
         id: `test-${Date.now()}-2`,
-        url: '/generated/generated_1760337604382_1.png',
-        prompt: '45度俯视 - 户外背包俯视角度',
+        url: '/generated/generated_1760357847404_1.png',
+        prompt: '45度俯视 - 产品俯视角度',
         style: '产品特写',
         timestamp: Date.now(),
       },
       {
         id: `test-${Date.now()}-3`,
-        url: '/generated/generated_1760337619577_2.png',
-        prompt: '侧面轮廓 - 户外背包侧面展示',
+        url: '/generated/generated_1760357860942_2.png',
+        prompt: '侧面轮廓 - 产品侧面展示',
         style: '产品特写',
         timestamp: Date.now(),
       }
