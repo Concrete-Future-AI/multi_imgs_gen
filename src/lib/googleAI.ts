@@ -3,6 +3,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { PHOTOGRAPHY_ANGLES, PHOTOGRAPHY_DISTANCES } from "./constants";
 import { generateAIImageFileName } from './fileNaming';
+import { storageService } from './storage';
 
 // 初始化Google Generative AI客户端
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY! });
@@ -12,24 +13,28 @@ const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_AI_API_KEY! });
  */
 async function saveImageToLocal(base64Data: string, fileName: string): Promise<string> {
   try {
-    // 确保public/generated目录存在
-    const generatedDir = path.join(process.cwd(), 'public', 'generated');
-    if (!fs.existsSync(generatedDir)) {
-      fs.mkdirSync(generatedDir, { recursive: true });
-    }
+    console.log(`      📥 开始保存Google AI生成的图片: ${fileName}`);
     
     // 将base64数据转换为buffer
     const imageBuffer = Buffer.from(base64Data, 'base64');
+    console.log(`      ✅ 图片数据转换完成，大小: ${imageBuffer.length} bytes`);
     
-    // 保存文件
-    const filePath = path.join(generatedDir, fileName);
-    fs.writeFileSync(filePath, imageBuffer);
+    // 使用存储服务保存文件
+    const fileInfo = await storageService.upload(imageBuffer, {
+      folder: 'generated',
+      filename: fileName,
+      preserveOriginalName: true
+    });
     
-    // 返回相对于public目录的URL路径
-    return `/generated/${fileName}`;
+    console.log(`      💾 保存成功: ${fileInfo.key}`);
+    console.log(`      🌐 返回URL路径: ${fileInfo.url}`);
+    
+    // 返回URL路径（兼容现有逻辑，返回相对路径）
+    return `/${fileInfo.key}`;
   } catch (error) {
     console.error('保存图片失败:', error);
-    throw new Error('保存图片失败');
+    const errorMsg = (error as Error)?.message || '保存图片失败';
+    throw new Error(`保存图片失败: ${errorMsg}`);
   }
 }
 

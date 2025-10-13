@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { FILE_CONFIG } from '@/lib/constants';
 import { generateTempFileName } from '@/lib/fileNaming';
+import { storageService } from '@/lib/storage';
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,17 +55,26 @@ export async function POST(request: NextRequest) {
     const base64 = buffer.toString('base64');
     const dataUrl = `data:${file.type};base64,${base64}`;
 
-    // 在实际应用中，这里可能需要：
-    // 1. 将文件保存到云存储（如AWS S3、阿里云OSS等）
-    // 2. 进行图片压缩和优化
-    // 3. 生成缩略图
-    // 4. 病毒扫描
-    // 5. 保存文件记录到数据库
+    // 使用存储服务保存文件到uploads文件夹
+    const savedFile = await storageService.upload(buffer, {
+      folder: 'uploads',
+      filename: file.name,
+      preserveOriginalName: false // 使用生成的唯一文件名
+    });
+
+    console.log('📁 用户文件保存成功:');
+    console.log(`   原始文件名: ${file.name}`);
+    console.log(`   保存路径: ${savedFile.key}`);
+    console.log(`   访问URL: ${savedFile.url}`);
 
     // 返回成功响应
     return NextResponse.json({
       success: true,
-      file: fileInfo,
+      file: {
+        ...fileInfo,
+        key: savedFile.key,
+        url: savedFile.url
+      },
       preview: dataUrl,
       uploadId: generateTempFileName('upload'),
       message: '文件上传成功'

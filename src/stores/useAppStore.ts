@@ -8,10 +8,10 @@ interface AppStore extends AppState {
   setSelectedStyle: (style: StyleOption | null) => void;
   setQuantity: (quantity: number) => void;
   setSceneDescription: (description: string) => void;
-  setGenerationProgress: (progress: GenerationProgress) => void;
   setGeneratedImages: (images: GeneratedImage[]) => void;
-  setIsGenerating: (isGenerating: boolean) => void;
   addGeneratedImage: (image: GeneratedImage) => void;
+  setGenerationProgress: (progress: GenerationProgress) => void;
+  setIsGenerating: (isGenerating: boolean) => void;
   clearAll: () => void;
   resetGeneration: () => void;
 }
@@ -21,14 +21,12 @@ const initialState: AppState = {
   selectedStyle: null,
   quantity: GENERATION_CONFIG.DEFAULT_IMAGES,
   sceneDescription: '',
+  generatedImages: [],
   generationProgress: {
     status: 'idle',
     progress: 0,
-    message: '准备开始...',
-    currentStep: 0,
-    totalSteps: 4,
+    message: '',
   },
-  generatedImages: [],
   isGenerating: false,
 };
 
@@ -49,28 +47,20 @@ export const useAppStore = create<AppStore>((set, get) => ({
   
   setSceneDescription: (description) => set({ sceneDescription: description }),
   
-  setGenerationProgress: (progress) => set({ generationProgress: progress }),
-  
   setGeneratedImages: (images) => set({ generatedImages: images }),
-  
-  setIsGenerating: (isGenerating) => set({ isGenerating }),
   
   addGeneratedImage: (image) => {
     const { generatedImages } = get();
     set({ generatedImages: [...generatedImages, image] });
   },
   
+  setGenerationProgress: (progress) => set({ generationProgress: progress }),
+  
+  setIsGenerating: (isGenerating) => set({ isGenerating }),
+  
   clearAll: () => set(initialState),
   
   resetGeneration: () => set({
-    generationProgress: {
-      status: 'idle',
-      progress: 0,
-      message: '准备开始...',
-      currentStep: 0,
-      totalSteps: 4,
-    },
     generatedImages: [],
-    isGenerating: false,
   }),
 }));

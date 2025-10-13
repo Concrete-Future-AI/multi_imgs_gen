@@ -115,6 +115,7 @@ pids
 
 # AI Generated Images (生成的图片文件，避免提交到仓库)
 public/generated/
+public/uploads/
 
 # 临时测试文件
 public/test-*.html

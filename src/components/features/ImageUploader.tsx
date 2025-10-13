@@ -37,22 +37,43 @@ export function ImageUploader({ onImageSelect }: ImageUploaderProps) {
     setIsUploading(true)
 
     try {
-      // 创建预览URL
+      // 创建预览URL（用于即时显示）
       const previewUrl = URL.createObjectURL(file)
       
-      // 模拟上传延迟
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // 调用上传API
+      const formData = new FormData()
+      formData.append('file', file)
       
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const result = await response.json()
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || '上传失败')
+      }
+
+      // 保存文件信息，包括服务器返回的URL
       setUploadedFile({
         file,
         preview: previewUrl,
-        id: Date.now().toString()
+        id: Date.now().toString(),
+        serverUrl: result.file.url, // 服务器返回的URL
+        serverKey: result.file.key, // 服务器返回的文件key
       })
+
+      console.log('📁 文件上传成功:')
+      console.log(`   本地预览: ${previewUrl}`)
+      console.log(`   服务器URL: ${result.file.url}`)
+      console.log(`   文件key: ${result.file.key}`)
 
       toast.success('图片上传成功！')
       onImageSelect?.()
     } catch (error) {
-      toast.error('图片上传失败，请重试')
+      console.error('文件上传失败:', error)
+      toast.error(`图片上传失败：${error instanceof Error ? error.message : '请重试'}`)
     } finally {
       setIsUploading(false)
     }

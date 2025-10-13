@@ -28,6 +28,8 @@ export interface UploadedFile {
   file: File;
   preview: string;
   id: string;
+  serverUrl?: string; // 服务器返回的文件URL
+  serverKey?: string; // 服务器返回的文件key
 }
 
 // 生成进度类型
@@ -101,7 +103,7 @@ export interface AppState {
   selectedStyle: StyleOption | null;
   quantity: number;
   sceneDescription: string; // 场景描述
-  generationProgress: GenerationProgress;
   generatedImages: GeneratedImage[];
+  generationProgress: GenerationProgress;
   isGenerating: boolean;
 }

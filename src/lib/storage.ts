@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { generateUploadFileName } from './fileNaming';
+import { generateUploadFileName, generateAIImageFileName, generateTempFileName } from './fileNaming';
 
 // 存储配置接口
 export interface StorageConfig {
@@ -63,8 +63,23 @@ export class LocalStorageService implements IStorageService {
 
     const { folder = 'generated', filename, preserveOriginalName = false } = options;
     
-    // 使用新的文件命名服务生成唯一文件名
-    const finalFilename = generateUploadFileName(filename, preserveOriginalName, buffer);
+    // 根据文件夹类型使用正确的命名函数
+    let finalFilename: string;
+    if (folder === 'uploads') {
+      // 用户上传文件使用upload_前缀
+      finalFilename = generateUploadFileName(filename, preserveOriginalName, buffer);
+    } else if (folder === 'generated') {
+      // AI生成文件使用ai_前缀，如果已经提供了filename则直接使用
+      if (filename && preserveOriginalName) {
+        finalFilename = filename;
+      } else {
+        // 如果没有提供filename，生成一个临时的AI文件名
+        finalFilename = generateTempFileName('ai', 'png');
+      }
+    } else {
+      // 其他情况使用临时文件命名
+      finalFilename = generateTempFileName(folder, filename ? path.extname(filename).slice(1) : 'bin');
+    }
 
     // 构建文件路径
     const relativePath = path.join(folder, finalFilename);
