@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Download, 
-  Eye,
   X,
   Clock,
   Tag,
@@ -11,15 +10,14 @@ import {
   Grid3X3,
   Share2,
   Heart,
-  Star,
-  Maximize2
+  Maximize2,
+  Check
 } from 'lucide-react';
 import { useAppStore } from '@/stores/useAppStore';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { downloadFile } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { downloadFile, convertToFileApiUrl } from '@/lib/utils';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { toast } from 'sonner';
@@ -30,9 +28,21 @@ export function ResultsDisplay() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadingIndex, setDownloadingIndex] = useState<number | null>(null);
 
+  // 添加调试日志
+  useEffect(() => {
+    console.log('🖼️ ResultsDisplay - generatedImages状态更新:', generatedImages);
+    console.log('🖼️ ResultsDisplay - 图片数量:', generatedImages.length);
+    if (generatedImages.length > 0) {
+      console.log('🖼️ ResultsDisplay - 第一张图片URL:', generatedImages[0].url);
+    }
+  }, [generatedImages]);
+
   if (generatedImages.length === 0) {
+    console.log('🖼️ ResultsDisplay - 没有图片，不渲染组件');
     return null;
   }
+
+  console.log('🖼️ ResultsDisplay - 开始渲染，图片数量:', generatedImages.length);
 
   const handleDownloadSingle = async (url: string, index: number) => {
     setDownloadingIndex(index);
@@ -59,7 +69,8 @@ export function ResultsDisplay() {
       // 下载所有图片并添加到zip
       const promises = generatedImages.map(async (image, index) => {
         try {
-          const response = await fetch(image.url);
+          const apiUrl = convertToFileApiUrl(image.url);
+          const response = await fetch(apiUrl);
           const blob = await response.blob();
           const filename = `generated-image-${index + 1}.jpg`;
           zip.file(filename, blob);
@@ -94,33 +105,33 @@ export function ResultsDisplay() {
 
   return (
     <>
-      <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-card to-card/80">
-        <CardHeader className="pb-6 bg-gradient-to-r from-primary/5 to-primary/10">
+      <Card className="overflow-hidden border-0 shadow-xl bg-card/95 backdrop-blur-sm">
+        <CardHeader className="pb-6 border-b border-border/50">
           <div className="flex items-center justify-between">
-            <div className="space-y-2">
-              <CardTitle className="text-2xl font-bold flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-primary to-primary/80 rounded-xl shadow-lg">
-                  <Grid3X3 className="h-6 w-6 text-white" />
-                </div>
-                生成结果
-              </CardTitle>
-              <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <div className="p-2.5 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
+                <Grid3X3 className="h-5 w-5 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-xl font-bold text-foreground mb-1">
+                  生成结果
+                </CardTitle>
                 <p className="text-sm text-muted-foreground">
-                  成功生成
+                  点击图片预览，长按保存
                 </p>
-                <Badge variant="default" className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md">
-                  <Star className="w-3 h-3 mr-1" />
-                  {generatedImages.length} 张图片
-                </Badge>
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Badge variant="secondary" className="px-3 py-1.5 bg-gradient-to-r from-emerald-500/10 to-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                <Check className="w-3.5 h-3.5 mr-1.5" />
+                {generatedImages.length} 张
+              </Badge>
               <Button
                 variant="outline"
                 size="default"
                 onClick={handleDownloadAll}
                 disabled={isDownloading}
-                className="gap-2 shadow-md hover:shadow-lg transition-all duration-200"
+                className="gap-2 shadow-sm hover:shadow-md transition-all duration-200"
               >
                 {isDownloading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -133,7 +144,7 @@ export function ResultsDisplay() {
                 variant="ghost"
                 size="default"
                 onClick={resetGeneration}
-                className="gap-2 hover:bg-muted/50"
+                className="gap-2 hover:bg-muted/80"
               >
                 <RotateCcw className="h-4 w-4" />
                 重新生成
@@ -143,16 +154,16 @@ export function ResultsDisplay() {
         </CardHeader>
         
         <CardContent className="p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {generatedImages.map((image, index) => (
               <div
                 key={image.id}
                 className="group relative aspect-square overflow-hidden rounded-2xl bg-gradient-to-br from-muted/50 to-muted/30 cursor-pointer transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20 hover:-translate-y-2 hover:scale-[1.02]"
-                onClick={() => setSelectedImage(image.url)}
+                onClick={() => setSelectedImage(convertToFileApiUrl(image.url))}
               >
                 {/* 图片 */}
                 <img
-                  src={image.url}
+                  src={convertToFileApiUrl(image.url)}
                   alt={`生成的图片 ${index + 1}`}
                   className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110"
                   loading="lazy"
@@ -170,7 +181,7 @@ export function ResultsDisplay() {
                       className="bg-white/95 hover:bg-white text-foreground shadow-xl backdrop-blur-md border-0 rounded-xl"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setSelectedImage(image.url);
+                        setSelectedImage(convertToFileApiUrl(image.url));
                       }}
                     >
                       <Maximize2 className="h-4 w-4" />
@@ -244,14 +255,6 @@ export function ResultsDisplay() {
                   >
                     #{index + 1}
                   </Badge>
-                </div>
-
-                {/* 质量指示器 */}
-                <div className="absolute top-3 right-3">
-                  <div className="flex items-center gap-1 bg-black/50 backdrop-blur-md rounded-lg px-2 py-1">
-                    <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                    <span className="text-white text-xs font-medium">HD</span>
-                  </div>
                 </div>
 
                 {/* 悬浮光晕效果 */}

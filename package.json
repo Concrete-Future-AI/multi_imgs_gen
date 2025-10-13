@@ -23,6 +23,7 @@
     "@radix-ui/react-radio-group": "^1.3.8",
     "@radix-ui/react-slider": "^1.3.6",
     "@radix-ui/react-slot": "^1.2.3",
+    "@types/uuid": "^10.0.0",
     "ai-ecommerce-image-generator": "file:",
     "axios": "^1.12.2",
     "class-variance-authority": "^0.7.1",
@@ -44,6 +45,7 @@
     "sharp": "^0.34.4",
     "sonner": "^1.7.1",
     "tailwind-merge": "^3.3.1",
+    "uuid": "^13.0.0",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

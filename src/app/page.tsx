@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -12,7 +12,8 @@ import { AgentWorkflowProgress } from '@/components/features/AgentWorkflowProgre
 import { ResultsDisplay } from '@/components/features/ResultsDisplay'
 import { useAppStore } from '@/stores/useAppStore'
 import type { GenerateApiResponse } from '@/types'
-import { Sparkles, Wand2, Image as ImageIcon, Download, Eye, Loader2, Check, Zap, Clock, Grid3X3 } from 'lucide-react'
+import { Sparkles, Wand2, Image as ImageIcon, Loader2, Check } from 'lucide-react'
+
 
 export default function Home() {
   const { 
@@ -21,14 +22,24 @@ export default function Home() {
     quantity,
     sceneDescription,
     isGenerating, 
-    generationProgress, 
     generatedImages,
     setIsGenerating,
     setGenerationProgress,
-    addGeneratedImage
+    setGeneratedImages,
   } = useAppStore()
 
-  const [activeStep, setActiveStep] = useState(1)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  // 监听页面滚动
+  useEffect(() => {
+    const handleScroll = () => {
+      // 当滚动超过200px时显示顶部导航栏
+      setIsScrolled(window.scrollY > 200)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const generateImages = async () => {
     console.log('=== generateImages 开始 ===')
@@ -38,6 +49,11 @@ export default function Home() {
     }
     
     console.log('✅ 开始设置生成状态')
+    
+    // 清空之前生成的图片
+    console.log('🗑️ 清空之前的图片')
+    setGeneratedImages([])
+    
     setIsGenerating(true)
     setGenerationProgress({
       status: 'uploading',
@@ -128,11 +144,18 @@ export default function Home() {
       try {
         // 调用生成API
         console.log('🚀 发送API请求到 /api/generate')
+        
+        // 创建AbortController用于超时控制
+        const controller = new AbortController()
+        const timeoutId = setTimeout(() => controller.abort(), 300000) // 5分钟超时
+        
         const response = await fetch('/api/generate', {
           method: 'POST',
           body: formData,
+          signal: controller.signal,
         })
         
+        clearTimeout(timeoutId)
         console.log('📥 收到API响应:', response.status, response.statusText)
 
         // 停止进度模拟
@@ -175,16 +198,37 @@ export default function Home() {
       }
 
       // 处理生成的图片
+      console.log('📸 返回的图片数据:', result.images)
       if (result && result.images && result.images.length > 0) {
-        result.images.forEach((imageUrl: string, index: number) => {
-          addGeneratedImage({
-            id: `generated-${Date.now()}-${index}`,
+        console.log('🔄 开始添加图片到状态管理...')
+        
+        // 创建图片数据数组
+        const baseTimestamp = Date.now()
+        const newImages = result.images.map((imageUrl: string, index: number) => {
+          console.log(`  图片${index + 1}: ${imageUrl}`)
+          return {
+            id: `generated-${baseTimestamp}-${index}`,
             url: imageUrl,
             prompt: result.prompt || selectedStyle.prompt,
             style: selectedStyle.name,
-            timestamp: Date.now(),
-          })
+            timestamp: baseTimestamp + index,
+          }
         })
+        
+        console.log('📝 准备设置的图片数据:', newImages)
+        
+        // 一次性设置所有图片
+        setGeneratedImages(newImages)
+        
+        console.log(`✅ 成功设置 ${newImages.length} 张图片到展示区`)
+        
+        // 验证状态是否更新
+        setTimeout(() => {
+          console.log('🔍 验证状态更新 - 当前generatedImages数量:', generatedImages.length);
+        }, 500);
+      } else {
+        console.warn('⚠️ 未收到图片数据或images数组为空')
+        console.log('🔍 result对象:', result);
       }
 
       setGenerationProgress({
@@ -239,7 +283,6 @@ export default function Home() {
     }
     
     console.log('✅ 验证通过，开始生成')
-    setActiveStep(4)
     await generateImages()
   }
 
@@ -281,65 +324,86 @@ export default function Home() {
   }, [uploadedFile, selectedStyle, isGenerating, sceneDescription])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3 animate-fade-in" style={{ animationDelay: '0s' }}>
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10 transition-all duration-500 hover:scale-110 hover:rotate-12">
-                <Sparkles className="w-6 h-6 text-primary animate-pulse" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">AI电商组图生成器</h1>
-                <p className="text-sm text-muted-foreground">专业的AI产品图片生成工具</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 animate-fade-in" style={{ animationDelay: '0.1s' }}>
-              <Badge variant="secondary" className="hidden sm:flex transition-all duration-300 hover:scale-105 hover:shadow-md">
-                <Wand2 className="w-3 h-3 mr-1" />
-                AI驱动
-              </Badge>
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main className="container mx-auto px-4 py-8">
-        {/* Progress Steps */}
-        <div className="mb-8">
-          <div className="flex items-center justify-center space-x-4 mb-6 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            {[
-              { step: 1, title: '上传图片', icon: ImageIcon },
-              { step: 2, title: '选择风格', icon: Sparkles },
-              { step: 3, title: '设置参数', icon: Wand2 },
-              { step: 4, title: '生成结果', icon: Download }
-            ].map(({ step, title, icon: Icon }) => (
-              <div key={step} className="flex items-center">
-                <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-500 hover:scale-105 ${
-                  activeStep >= step 
-                    ? 'bg-primary border-primary text-primary-foreground shadow-lg' 
-                    : 'border-muted-foreground/30 text-muted-foreground'
-                }`}>
-                  <Icon className="w-4 h-4" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+      {/* 滚动时出现的顶部导航栏 */}
+      <div
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'translate-y-0 opacity-100'
+            : '-translate-y-full opacity-0'
+        }`}
+      >
+        <div className="backdrop-blur-xl bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-700/50 shadow-lg">
+          <div className="container mx-auto px-4 py-3 max-w-7xl">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center justify-center p-2 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl shadow-md">
+                  <Sparkles className="h-5 w-5 text-white" />
                 </div>
-                <span className={`ml-2 text-sm font-medium hidden sm:block transition-all duration-300 ${
-                  activeStep >= step ? 'text-foreground' : 'text-muted-foreground'
-                }`}>
-                  {title}
-                </span>
-                {step < 4 && (
-                  <div className={`w-8 h-0.5 mx-4 transition-all duration-500 ${
-                    activeStep > step ? 'bg-primary animate-pulse' : 'bg-muted-foreground/30'
-                  }`} />
-                )}
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                    AI电商组图生成器
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {uploadedFile ? '✓ 已上传' : '等待上传'} | {selectedStyle ? `${selectedStyle.name}` : '选择风格'} | {quantity}张
+                  </p>
+                </div>
               </div>
-            ))}
+              <div className="flex items-center gap-3">
+                {generatedImages.length > 0 && (
+                  <Badge variant="secondary" className="bg-gradient-to-r from-green-500 to-green-600 text-white">
+                    <Check className="w-3 h-3 mr-1" />
+                    {generatedImages.length} 张完成
+                  </Badge>
+                )}
+                <ThemeToggle />
+                <Button
+                  onClick={handleGenerate}
+                  disabled={!canGenerate}
+                  size="sm"
+                  className="shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      生成中
+                    </>
+                  ) : (
+                    <>
+                      <Wand2 className="w-4 h-4 mr-2" />
+                      开始生成
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Header */}
+        <div className="text-center mb-12 relative">
+          {/* 主题切换按钮 - 右上角 */}
+          <div className="absolute top-0 right-0">
+            <ThemeToggle />
+          </div>
+          
+          <div className="inline-flex items-center justify-center p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg mb-6">
+            <Sparkles className="h-8 w-8 text-white" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent mb-4">
+            波波老师AI电商组图生成器
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            上传产品图片，选择风格，AI为您生成专业的电商展示图片
+          </p>
+        </div>
+
+
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Controls */}
           <div className="lg:col-span-2 space-y-6">
             {/* Step 1: Image Upload */}
@@ -411,7 +475,7 @@ export default function Home() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <div className="p-1 bg-primary/10 rounded-lg transition-all duration-300 group-hover:bg-primary/20">
-                    <Eye className="w-5 h-5 text-primary" />
+                    <Wand2 className="w-5 h-5 text-primary" />
                   </div>
                   预览与操作
                 </CardTitle>
@@ -494,39 +558,19 @@ export default function Home() {
 
         {/* Results Section */}
         {generatedImages.length > 0 && (
-          <div className="mt-8">
-            <Card className="transition-all duration-500 hover:shadow-lg hover:-translate-y-1 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="p-1 bg-primary/10 rounded-lg transition-all duration-300 group-hover:bg-primary/20">
-                    <Download className="w-5 h-5 text-primary" />
-                  </div>
-                  生成结果
-                  <Badge variant="secondary" className="ml-auto animate-pulse">
-                    {generatedImages.length} 张图片
-                  </Badge>
-                </CardTitle>
-                <CardDescription>
-                  点击图片可以预览和下载
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResultsDisplay />
-              </CardContent>
-            </Card>
+          <div className="mt-8 animate-fade-in">
+            <ResultsDisplay />
           </div>
         )}
-      </main>
 
-      {/* Footer */}
-      <footer className="border-t bg-card/50 backdrop-blur-sm mt-16">
-        <div className="container mx-auto px-4 py-6">
+        {/* Footer */}
+        <div className="border-t bg-card/50 backdrop-blur-sm mt-16 pt-6 pb-6">
           <div className="flex items-center justify-center text-sm text-muted-foreground">
             <Sparkles className="w-4 h-4 mr-2" />
             波波老师工作室出品
           </div>
         </div>
-      </footer>
+      </div>
     </div>
   )
 }

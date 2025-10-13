@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -10,48 +10,54 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
+# Testing
 /coverage
+*.lcov
+.nyc_output
 
-# next.js
+# Next.js
 /.next/
 /out/
+next-env.d.ts
 
-# production
+# Production
 /build
+/dist
 
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
+# Environment variables
 .env*
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-# vercel
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
-next-env.d.ts
 
-# IDE
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Local development
+.DS_Store
+*.pem
+
+# IDE and Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
 
-# OS
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -59,6 +65,7 @@ next-env.d.ts
 .Trashes
 ehthumbs.db
 Thumbs.db
+Desktop.ini
 
 # Logs
 logs
@@ -69,17 +76,6 @@ pids
 *.pid
 *.seed
 *.pid.lock
-
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Dependency directories
-node_modules/
-jspm_packages/
 
 # Optional npm cache directory
 .npm
@@ -96,18 +92,9 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# parcel-bundler cache (https://parceljs.org/)
+# Parcel cache
 .cache
 .parcel-cache
-
-# next.js build output
-.next
-
-# nuxt.js build output
-.nuxt
-
-# vuepress build output
-.vuepress/dist
 
 # Serverless directories
 .serverless
@@ -121,17 +108,75 @@ jspm_packages/
 # TernJS port file
 .tern-port
 
-# AI Generated Images (keep for demo purposes)
-# public/generated/
-
-# Test API outputs
-test-api/output/
-test-api/.env.local
-
 # Temporary files
 *.tmp
 *.temp
+.temp/
 
-# Lock files (keep package-lock.json for consistency)
+# AI Generated Images (keeping for demo purposes, but can be uncommented to ignore)
+# public/generated/
+
+# Test API outputs and environment
+test-api/output/
+test-api/.env.local
+test-api/node_modules/
+
+# Documentation build outputs
+docs/build/
+
+# Storybook build outputs
+storybook-static/
+
+# Turbo
+.turbo
+
+# Sentry
+.sentryclirc
+
+# PWA files
+**/sw.js
+**/workbox-*.js
+
+# Bundle analyzer
+.next/analyze/
+
+# Prisma
+prisma/migrations/
+.env.db
+
+# Redis dump
+dump.rdb
+
+# Lock files (uncomment if you want to ignore them)
 # yarn.lock
 # pnpm-lock.yaml
+# package-lock.json
+
+# Local development overrides
+.env.override
+.env.development.override
+
+# Backup files
+*.backup
+*.bak
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Generated documentation
+/docs/api/
+/docs/coverage/
+
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+
+# MSW
+public/mockServiceWorker.js
+
+# Capacitor
+android/
+ios/

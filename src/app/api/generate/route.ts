@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { analyzeProduct, generatePrompt, generateImages } from '@/lib/doubaoAI';
 import { STYLE_OPTIONS, GENERATION_CONFIG, FILE_CONFIG } from '@/lib/constants';
 
+// 配置API路由
+export const maxDuration = 300; // 5分钟超时
+export const dynamic = 'force-dynamic'; // 强制动态渲染
+
 export async function POST(request: NextRequest) {
   try {
     console.log('=== API /api/generate 接收到请求 ===');
@@ -102,24 +106,31 @@ export async function POST(request: NextRequest) {
     console.log('开始生成图片...');
     // 判断图片类型
     const imageType = selectedStyle.requiresScene ? 'scene' : 'closeup';
+    console.log(`📸 图片类型: ${imageType}, 场景描述: "${sceneDescription || '(无)'}"`);
     const images = await generateImages(
       prompt, 
       quantity, 
       analysis, 
       buffer, 
       productImage.type,
-      imageType
+      imageType,
+      sceneDescription // 传递原始场景描述
     );
     console.log(`图片生成完成，共生成 ${images.length} 张`);
+    console.log('生成的图片路径:', images);
 
     // 返回成功响应
-    return NextResponse.json({
+    const response = {
       success: true,
       images,
       analysis,
       prompt,
       requestId: `req_${Date.now()}`
-    });
+    };
+    
+    console.log('返回给前端的数据:', JSON.stringify(response, null, 2));
+    
+    return NextResponse.json(response);
 
   } catch (error) {
     console.error('API Error:', error);

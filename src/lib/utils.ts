@@ -19,9 +19,29 @@ export function formatTime(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-export function downloadFile(url: string, filename: string) {
+/**
+ * 将静态文件路径转换为文件API路径
+ * @param staticPath 静态文件路径，如 "/generated/xxx.png"
+ * @returns 文件API路径，如 "/api/files/generated/xxx.png"
+ */
+export function convertToFileApiUrl(staticPath: string): string {
+  // 移除开头的斜杠（如果有的话）
+  const cleanPath = staticPath.startsWith('/') ? staticPath.slice(1) : staticPath;
+  return `/api/files/${cleanPath}`;
+}
+
+/**
+ * 使用文件API下载文件
+ * @param staticPath 静态文件路径，如 "/generated/xxx.png"
+ * @param filename 下载文件名
+ */
+export function downloadFile(staticPath: string, filename: string) {
+  // 转换为文件API下载URL
+  const cleanPath = staticPath.startsWith('/') ? staticPath.slice(1) : staticPath;
+  const downloadUrl = `/api/files/${cleanPath}?download=true&filename=${encodeURIComponent(filename)}`;
+  
   const link = document.createElement('a')
-  link.href = url
+  link.href = downloadUrl
   link.download = filename
   document.body.appendChild(link)
   link.click()
