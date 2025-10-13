@@ -471,7 +471,7 @@ export default function Home() {
           {/* Right Column - Preview & Actions */}
           <div className="space-y-6">
             {/* Preview Card */}
-            <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in sticky top-6" style={{ animationDelay: '0.4s' }}>
+            <Card className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in sticky top-24" style={{ animationDelay: '0.4s' }}>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <div className="p-1 bg-primary/10 rounded-lg transition-all duration-300 group-hover:bg-primary/20">

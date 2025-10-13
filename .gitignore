@@ -14,11 +14,16 @@
 /coverage
 *.lcov
 .nyc_output
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # Next.js
 /.next/
 /out/
 next-env.d.ts
+.next/
+.swc/
 
 # Production
 /build
@@ -30,18 +35,23 @@ next-env.d.ts
 .env.development.local
 .env.test.local
 .env.production.local
+.env.override
+.env.development.override
 
 # Vercel
 .vercel
+.vercel.json
 
 # TypeScript
 *.tsbuildinfo
+next-env.d.ts
 
 # Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+lerna-debug.log*
 
 # Local development
 .DS_Store
@@ -116,6 +126,14 @@ pids
 # AI Generated Images (keeping for demo purposes, but can be uncommented to ignore)
 # public/generated/
 
+# AI Development
+.ai/
+.cursor/
+.continue/
+.codeium/
+.copilot/
+.tabnine/
+
 # Test API outputs and environment
 test-api/output/
 test-api/.env.local
@@ -180,3 +198,62 @@ public/mockServiceWorker.js
 # Capacitor
 android/
 ios/
+
+# Modern Development Tools
+.vite/
+.nuxt/
+.output/
+.nitro/
+.cache/
+.temp/
+.tmp/
+
+# Cloud Services
+.firebase/
+.gcp/
+.aws/
+.azure/
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Kubernetes
+*.kubeconfig
+k8s-secrets/
+
+# Monitoring and Analytics
+.sentry-native/
+.datadog/
+.newrelic/
+
+# Package managers
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Runtime and process managers
+.pm2/
+ecosystem.config.js
+
+# Security
+.secrets/
+.keys/
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+.db/
+
+# Cache directories
+.eslintcache
+.stylelintcache
+.prettiercache
