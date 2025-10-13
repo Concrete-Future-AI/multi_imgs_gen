@@ -87,12 +87,22 @@ export class LocalStorageService implements IStorageService {
     // 获取文件信息
     const stats = await fs.stat(fullPath);
     
-    return {
+    const fileInfo = {
       key: relativePath.replace(/\\/g, '/'), // 统一使用正斜杠
       url: `${this.config.baseUrl}/${relativePath.replace(/\\/g, '/')}`,
       size: stats.size,
       mimeType: this.getMimeTypeFromExtension(extension),
     };
+    
+    // 调试日志：输出生成的图片信息
+    console.log('📸 图片保存成功:');
+    console.log(`   文件名: ${finalFilename}`);
+    console.log(`   本地路径: ${fullPath}`);
+    console.log(`   相对路径: ${fileInfo.key}`);
+    console.log(`   访问URL: ${fileInfo.url}`);
+    console.log(`   文件大小: ${fileInfo.size} bytes`);
+    
+    return fileInfo;
   }
 
   async download(key: string): Promise<Buffer> {
@@ -261,11 +271,19 @@ export class StorageServiceFactory {
     const storageType = process.env.STORAGE_TYPE || 'local';
     
     if (storageType === 'local') {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      
+      // 调试日志：输出当前使用的baseUrl
+      console.log('🔧 存储服务配置:');
+      console.log(`   STORAGE_TYPE: ${storageType}`);
+      console.log(`   NEXT_PUBLIC_BASE_URL: ${process.env.NEXT_PUBLIC_BASE_URL || '未设置'}`);
+      console.log(`   实际使用的baseUrl: ${baseUrl}`);
+      
       return {
         type: 'local',
         local: {
           uploadDir: path.join(process.cwd(), 'public'),
-          baseUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+          baseUrl: baseUrl,
         },
       };
     }
