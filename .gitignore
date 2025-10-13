@@ -113,8 +113,11 @@ pids
 *.temp
 .temp/
 
-# AI Generated Images (keeping for demo purposes, but can be uncommented to ignore)
-# public/generated/
+# AI Generated Images (生成的图片文件，避免提交到仓库)
+public/generated/
+
+# 临时测试文件
+public/test-*.html
 
 # Test API outputs and environment
 test-api/output/
